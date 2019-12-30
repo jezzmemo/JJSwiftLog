@@ -58,7 +58,7 @@ public struct JJFileOutput: JJLogOutput {
             print("Create file pointer failed")
             return nil
         }
-        
+        #if os(iOS) || os(watchOS) || os(tvOS)
         if #available(iOS 10.0, *) {
             do {
                 var attributes = try FileManager.default.attributesOfItem(atPath: logFilePath ?? "")
@@ -68,6 +68,7 @@ public struct JJFileOutput: JJLogOutput {
                 print("Set file protectionKey failed")
             }
         }
+        #endif
         
         _logQueue = DispatchQueue(label: "JJLogFile" ,target: _logQueue)
     }

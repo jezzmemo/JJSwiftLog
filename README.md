@@ -13,11 +13,26 @@
 
 # 如何安装
 
+*  Swift 4.0+
+
+
 __Podfile__
 
 
 ```
 pod 'JJSwiftLog'
+```
+
+__Carthage__
+
+```
+github "jezzmemo/JJSwiftLog"
+```
+
+__Swift Package Manager__
+
+```
+.package(url: "https://github.com/jezzmemo/JJSwiftLog.git"),
 ```
 
 # 如何使用

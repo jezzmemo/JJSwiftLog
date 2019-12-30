@@ -30,6 +30,6 @@ High performance swift log.
 
   s.source_files = 'JJSwiftLog/Source/**/*.{swift}'
   s.requires_arc = true
-  s.swift_version = '4.0'
+  s.swift_versions = ['4.0','4.2','5.0']
 
 end

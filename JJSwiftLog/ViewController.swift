@@ -10,9 +10,19 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    func setupLog() {
+        swiftLog.addLogOutput(JJFileOutput()!)
+        swiftLog.addLogOutput(JJConsoleOutput())
+    }
+
     override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+         super.viewDidLoad()
+         setupLog()
+         swiftLog.verbose("verbose")
+         swiftLog.debug("debug")
+         swiftLog.info("info")
+         swiftLog.warning("warn")
+         swiftLog.error("error")
     }
 
 
