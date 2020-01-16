@@ -100,4 +100,7 @@ public struct CustomerOutput: JJLogOutput {
 # Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)
 
+## License
+JJSwiftLog is released under the MIT license. See LICENSE for details.
+
 
