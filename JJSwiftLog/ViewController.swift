@@ -22,11 +22,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
          super.viewDidLoad()
          setupLog()
-         swiftLog.verbose("verbose")
-         swiftLog.debug("debug")
-         swiftLog.info("info")
-         swiftLog.warning("warn")
-         swiftLog.error("error")
+         jjLogger.verbose("verbose")
+         jjLogger.debug("debug")
+         jjLogger.info("info")
+         jjLogger.warning("warn")
+         jjLogger.error("error")
     }
 
 
