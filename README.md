@@ -45,7 +45,7 @@ import JJSwiftLog
 
 * 使用示例，__setup必须的__
 
-```
+```swift
 func setupLog() {
      if let file = JJFileOutput() {
          jjLogger.addLogOutput(file)
@@ -68,7 +68,7 @@ override func viewDidLoad() {
 
 * 高级使用，根据需要实现自定义接口`JJLogOutput`，示例如下:
 
-```
+```swift
 public struct CustomerOutput: JJLogOutput {
     
     public var queue: DispatchQueue? {
@@ -86,7 +86,8 @@ public struct CustomerOutput: JJLogOutput {
     }
     
     /// 获取日志方法
-    public func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) -> String? {
+    public func log(_ level: JJSwiftLog.Level, msg: String, thread: String,
+     file: String, function: String, line: Int) -> String? {
         return ""
     }
     
