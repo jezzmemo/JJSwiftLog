@@ -11,8 +11,12 @@ import UIKit
 class ViewController: UIViewController {
 
     func setupLog() {
-        swiftLog.addLogOutput(JJFileOutput()!)
-        swiftLog.addLogOutput(JJConsoleOutput())
+        if let file = JJFileOutput() {
+            jjLogger.addLogOutput(file)
+        }
+        #if DEBUG
+        jjLogger.addLogOutput(JJConsoleOutput())
+        #endif
     }
 
     override func viewDidLoad() {

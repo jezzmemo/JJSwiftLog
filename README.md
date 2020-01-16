@@ -9,7 +9,7 @@
 
 * 日志文件存储(File Log)
 
-* 日志网络存储(Network Log)
+* 日志网络存储(Network Log),__暂未实现，后续会加上__
 
 # 如何安装
 
@@ -47,8 +47,12 @@ import JJSwiftLog
 
 ```
 func setupLog() {
-    swiftLog.addLogOutput(JJFileOutput()!)
-    swiftLog.addLogOutput(JJConsoleOutput())
+     if let file = JJFileOutput() {
+         jjLogger.addLogOutput(file)
+     }
+     #if DEBUG
+     jjLogger.addLogOutput(JJConsoleOutput())
+     #endif
 }
 
 override func viewDidLoad() {
@@ -62,7 +66,37 @@ override func viewDidLoad() {
 }
 ```
 
+* 高级使用，根据需要实现自定义接口`JJLogOutput`，示例如下:
+
+```
+public struct CustomerOutput: JJLogOutput {
+    
+    public var queue: DispatchQueue? {
+        return 自定义队列
+    }
+    
+    /// 重写日志的级别
+    public var logLevel: JJSwiftLog.Level {
+        get {
+            return _consoleLevel
+        }
+        set {
+            _consoleLevel = newValue
+        }
+    }
+    
+    /// 获取日志方法
+    public func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) -> String? {
+        return ""
+    }
+    
+}
+```
+
 # TODO
 * 集成一个三方日志收集
+
+# Linker
+* [保护App不闪退](https://github.com/jezzmemo/JJException)
 
 

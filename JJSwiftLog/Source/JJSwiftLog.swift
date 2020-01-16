@@ -9,7 +9,7 @@
 import Foundation
 
 /// JJSwiftLog的别名，方便开发者快速使用
-public let swiftLog = JJSwiftLog.self
+public let jjLogger = JJSwiftLog.self
 
 /// JJSwiftLog日志入口
 ///
