@@ -18,15 +18,21 @@ class ViewController: UIViewController {
         jjLogger.addLogOutput(JJConsoleOutput())
         #endif
     }
-
+    
+    func setupVendor() {
+        jjLogger.addLogOutput(BuglyOutput())
+        jjLogger.addLogOutput(UmengOutput())
+    }
+    
     override func viewDidLoad() {
-         super.viewDidLoad()
-         setupLog()
-         jjLogger.verbose("verbose")
-         jjLogger.debug("debug")
-         jjLogger.info("info")
-         jjLogger.warning("warn")
-         jjLogger.error("error")
+        super.viewDidLoad()
+        setupLog()
+        setupVendor()
+        jjLogger.verbose("verbose")
+        jjLogger.debug("debug")
+        jjLogger.info("info")
+        jjLogger.warning("warn")
+        jjLogger.error("error")
     }
 
 

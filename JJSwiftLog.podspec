@@ -27,9 +27,26 @@ High performance swift log,support customer log.
   s.source           = { :git => 'https://github.com/jezzmemo/JJSwiftLog.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '9.0'
-
-  s.source_files = 'JJSwiftLog/Source/**/*.{swift}'
-  s.requires_arc = true
   s.swift_versions = ['4.0','4.2','5.0']
+  s.default_subspec = 'Main'
+
+  s.static_framework = true
+
+  s.subspec 'Main' do |spec|
+    spec.source_files = 'JJSwiftLog/Source/*.{swift}'
+  end
+
+  s.subspec 'Bugly' do |spec|
+    spec.source_files = 'JJSwiftLog/Source/Vendor/BuglyOutput.swift'
+    spec.dependency 'Bugly'
+    spec.dependency 'JJSwiftLog/Main'
+  end
+
+  s.subspec 'Umeng' do |spec|
+    spec.source_files = 'JJSwiftLog/Source/Vendor/UmengOutput.swift'
+    spec.public_header_files = "JJSwiftLog/Source/Vendor/_UmengBridging.h"
+    spec.dependency 'JJSwiftLog/Main'
+    spec.dependency 'UMCAnalytics'
+  end
 
 end
