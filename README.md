@@ -99,7 +99,7 @@ public struct CustomerOutput: JJLogOutput {
 }
 ```
 
-* 使用集成Bugly版本,可以将日志信息上传到Bugly平台，可以自己自定义日志级别，方法如下:
+* 使用集成Bugly版本,可以将日志信息上传到Bugly平台，自定义日志级别，方法如下:
 
 __Podfile__
 
@@ -111,13 +111,15 @@ pod 'JJSwiftLog/Bugly'
 __初始化__
 
 ```swift
-    func setupVendor() {
-        jjLogger.addLogOutput(BuglyOutput())
-    }
+func setupVendor() {
+    var bugly = BuglyOutput()
+    bugly.logLevel = .error
+    jjLogger.addLogOutput(bugly)
+}
 ```
 
 ## TODO
-* 日志信息支持多格式
+* 日志信息更加丰富
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)
