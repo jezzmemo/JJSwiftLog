@@ -13,7 +13,7 @@
 
 * 日志文件存储(File Log)
 
-* 日志网络存储(Network Log),__暂未实现，后续会加上__
+* 日志网络存储(Network Log)，目前支持Bugly
 
 ## 如何安装
 
@@ -75,8 +75,9 @@ override func viewDidLoad() {
 ```swift
 public struct CustomerOutput: JJLogOutput {
     
+    /// 自定义队列
     public var queue: DispatchQueue? {
-        return 自定义队列
+        return nil
     }
     
     /// 重写日志的级别
@@ -98,8 +99,25 @@ public struct CustomerOutput: JJLogOutput {
 }
 ```
 
+* 使用集成Bugly版本,可以将日志信息上传到Bugly平台，可以自己自定义日志级别，方法如下:
+
+__Podfile__
+
+
+```
+pod 'JJSwiftLog/Bugly'
+```
+
+__初始化__
+
+```swift
+    func setupVendor() {
+        jjLogger.addLogOutput(BuglyOutput())
+    }
+```
+
 ## TODO
-* 集成一个三方日志收集
+* 日志信息支持多格式
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)

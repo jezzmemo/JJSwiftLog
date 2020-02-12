@@ -30,7 +30,7 @@ High performance swift log,support customer log.
   s.swift_versions = ['4.0','4.2','5.0']
   s.default_subspec = 'Main'
 
-  s.static_framework = true
+  # s.static_framework = true
 
   s.subspec 'Main' do |spec|
     spec.source_files = 'JJSwiftLog/Source/*.{swift}'
@@ -38,15 +38,8 @@ High performance swift log,support customer log.
 
   s.subspec 'Bugly' do |spec|
     spec.source_files = 'JJSwiftLog/Source/Vendor/BuglyOutput.swift'
-    spec.dependency 'Bugly'
+    spec.vendored_frameworks = 'JJSwiftLog/Source/VendorLibraries/Bugly/*.framework'
     spec.dependency 'JJSwiftLog/Main'
-  end
-
-  s.subspec 'Umeng' do |spec|
-    spec.source_files = 'JJSwiftLog/Source/Vendor/UmengOutput.swift'
-    spec.public_header_files = "JJSwiftLog/Source/Vendor/_UmengBridging.h"
-    spec.dependency 'JJSwiftLog/Main'
-    spec.dependency 'UMCAnalytics'
   end
 
 end

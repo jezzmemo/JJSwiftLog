@@ -21,7 +21,6 @@ class ViewController: UIViewController {
     
     func setupVendor() {
         jjLogger.addLogOutput(BuglyOutput())
-        jjLogger.addLogOutput(UmengOutput())
     }
     
     override func viewDidLoad() {
