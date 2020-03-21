@@ -32,6 +32,8 @@ public struct JJSwiftLog {
     
     private static let semaphore = DispatchSemaphore(value: 1)
     
+    private static var onlyShowLogFileName: String? = nil
+    
     /// 日志输出集合，用于多个输出，由各自的业务特点控制输出
     /// - Parameter output: JJLogOutput
     public static func addLogOutput(_ output: JJLogOutput) {
@@ -60,6 +62,12 @@ public struct JJSwiftLog {
         if index != nil {
             outputs.remove(at: index!)
         }
+    }
+    
+    /// 当前只显示指定文件的日志，默认是显示全部文件的日志
+    /// - Parameter filename: 文件名称
+    public static func onlyLogFile(_ filename: String) {
+        onlyShowLogFileName = filename
     }
     
     //MARK: - Log Level
@@ -102,6 +110,12 @@ public struct JJSwiftLog {
     /// - Parameter line: 日志所在行数
     public static func custom(level: JJSwiftLog.Level, message: String,
                               file: String = #file, function: String = #function, line: Int = #line) {
+        
+        
+        /// 如果onlyShowLogFileName配置过且不等于当前文件名，将忽略本次日志
+        if let fileName = onlyShowLogFileName, fileName != file {
+            return
+        }
         
         let threadName = self.threadName()
         

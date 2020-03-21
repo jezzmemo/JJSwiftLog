@@ -119,7 +119,8 @@ func setupVendor() {
 ```
 
 ## TODO
-* 日志信息更加丰富
+* 日志信息更加丰富，支持配置Format
+* onlyshowfile功能
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)
