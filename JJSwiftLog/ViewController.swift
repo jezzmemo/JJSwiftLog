@@ -34,8 +34,29 @@ class ViewController: UIViewController {
         jjLogger.info("info")
         jjLogger.warning("warn")
         jjLogger.error("error")
+        
+        print(self.parsePadding("Mkk "))
+        print(self.parsePadding("123 ,12321."))
     }
 
 
+    /// returns (padding length value, offset in string after padding info)
+    private func parsePadding(_ text: String) -> (Int, Int) {
+        // look for digits followed by a alpha character
+        var s: String!
+        var sign: Int = 1
+        if text.first == "-" {
+            sign = -1
+            s = String(text.suffix(from: text.index(text.startIndex, offsetBy: 1)))
+        } else {
+            s = text
+        }
+        let numStr = s.prefix { $0 >= "0" && $0 <= "9" }
+        if let num = Int(String(numStr)) {
+            return (sign * num, (sign == -1 ? 1 : 0) + numStr.count)
+        } else {
+            return (0, 0)
+        }
+    }
 }
 

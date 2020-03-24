@@ -34,6 +34,20 @@ public struct JJSwiftLog {
     
     private static var onlyShowLogFileName: String? = nil
     
+    // MARK: - Public
+    
+    /// 是否启用，默认是打开的
+    public static var enable = true
+    
+    /// 格式化日志，默认是`%date %thread %file %fun %line %level,%message`
+    public static var format: String? {
+        didSet {
+            if self.format != nil {
+                JJLogFormatter.shared.formatLog(format!)
+            }
+        }
+    }
+    
     /// 日志输出集合，用于多个输出，由各自的业务特点控制输出
     /// - Parameter output: JJLogOutput
     public static func addLogOutput(_ output: JJLogOutput) {
@@ -114,6 +128,10 @@ public struct JJSwiftLog {
         
         /// 如果onlyShowLogFileName配置过且不等于当前文件名，将忽略本次日志
         if let fileName = onlyShowLogFileName, fileName != file {
+            return
+        }
+        
+        if !enable {
             return
         }
         

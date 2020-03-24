@@ -10,10 +10,9 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - Bugly
     - UMCAnalytics
     - UMCCommon
-  trunk:
-    - Bugly
 
 SPEC CHECKSUMS:
   Bugly: dbac48b55ad469a97cc4321045cd50df8f63d44f
