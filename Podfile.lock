@@ -1,24 +1,3 @@
-PODS:
-  - Bugly (2.5.2)
-  - UMCAnalytics (6.0.5):
-    - UMCCommon
-  - UMCCommon (2.1.1)
-
-DEPENDENCIES:
-  - Bugly
-  - UMCAnalytics
-
-SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - Bugly
-    - UMCAnalytics
-    - UMCCommon
-
-SPEC CHECKSUMS:
-  Bugly: dbac48b55ad469a97cc4321045cd50df8f63d44f
-  UMCAnalytics: 045be2cd1ec05aa95ad62405a850757f932e2d59
-  UMCCommon: 971f324a5a99c9d662ae040a815e7e3d7ef8b2a8
-
-PODFILE CHECKSUM: c9645f957deb9b7768a6584fe6137ea156ca5b4f
+PODFILE CHECKSUM: c1ab50e4e9c69f91e23ef37eb257cf05d9a6ab31
 
 COCOAPODS: 1.8.4

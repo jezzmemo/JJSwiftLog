@@ -20,9 +20,7 @@ class ViewController: UIViewController {
     }
     
     func setupVendor() {
-        var bugly = BuglyOutput()
-        bugly.logLevel = .error
-        jjLogger.addLogOutput(bugly)
+        
     }
     
     override func viewDidLoad() {

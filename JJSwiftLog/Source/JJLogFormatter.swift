@@ -18,6 +18,7 @@ public enum FormatterOption: String {
     case function = "f"
     case date = "D"
     case thread = "T"
+    case origin = "origin"
 }
 
 /// 格式化结果
@@ -25,7 +26,6 @@ public enum LogSegment {
     
     case token(FormatterOption, String)
     
-    case origin(String)
 }
 
 /// 处理格式化配置，生产内部定义
@@ -71,7 +71,7 @@ public class JJLogFormatter {
                 segments.append(.token(formatSegment!, String(remainingPhrase)))
                 break
             default:
-                segments.append(.origin(phrase))
+                segments.append(.token(.origin, phrase))
                 break
             }
             

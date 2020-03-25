@@ -39,6 +39,9 @@ extension JJLogOutput {
     /// - Parameter line: 日志当前行
     func formatMessage(level: JJSwiftLog.Level, msg: String, thread: String,
                        file: String, function: String, line: Int) -> String {
+        if JJLogFormatter.shared.segments.count > 0 {
+            return formatSegmentMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
+        }
         var text = ""
         text += self.formatDate(JJLogOutputConfig.formatter) + JJLogOutputConfig.padding
         text += thread.isEmpty ? "" : (thread + JJLogOutputConfig.padding)
@@ -48,6 +51,44 @@ extension JJLogOutput {
         text += level.stringLevel + JJLogOutputConfig.padding
         text += msg
         text += JJLogOutputConfig.newline
+        return text
+    }
+    
+    func formatSegmentMessage(level: JJSwiftLog.Level, msg: String, thread: String,
+                              file: String, function: String, line: Int) -> String {
+        var text = ""
+        let segments = JJLogFormatter.shared.segments
+        for segment in segments {
+            switch segment {
+            case .token(let option, let string):
+                switch option {
+                case .message:
+                    text += msg
+                    break
+                case .level:
+                    text += level.stringLevel
+                    break
+                case .line:
+                    text += "\(line)"
+                    break
+                case .file:
+                    text += self.fileNameWithoutSuffix(file)
+                    break
+                case .function:
+                    text += function
+                    break
+                case .date:
+                    text += self.formatDate(JJLogOutputConfig.formatter)
+                    break
+                case .thread:
+                    text += thread.isEmpty ? "" : thread
+                    break
+                case .origin:
+                    text += string
+                    break
+                }
+            }
+        }
         return text
     }
     

@@ -7,8 +7,8 @@ target 'JJSwiftLog' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'Bugly'
-  pod 'UMCAnalytics'
+  #pod 'Bugly'
+  #pod 'UMCAnalytics'
 
   target 'JJSwiftLogCarthageTests' do
     inherit! :search_paths
