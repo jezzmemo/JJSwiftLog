@@ -19,6 +19,7 @@ public enum FormatterOption: String {
     case date = "D"
     case thread = "T"
     case origin = "origin"
+    case ignore = "I"
 }
 
 /// 格式化结果
@@ -29,7 +30,7 @@ public enum LogSegment {
 }
 
 /// 处理格式化配置，生产内部定义
-public class JJLogFormatter {
+public final class JJLogFormatter {
     
     public static let shared: JJLogFormatter = {
         let format = JJLogFormatter()
@@ -47,9 +48,9 @@ public class JJLogFormatter {
     /// 格式化字符串生成日志片段
     /// - Parameter formatter: 格式化字符
     func formatLog(_ formatter: String) {
-        let phrases = formatter.components(separatedBy: "%")
+        let phrases = ("%I" + formatter).components(separatedBy: "%")
         
-        for phrase in phrases {
+        for phrase in phrases where !phrase.isEmpty {
             let (_, offset) = self.parsePadding(phrase)
             
             let formatCharIndex = phrase.index(phrase.startIndex, offsetBy: offset)
@@ -63,12 +64,23 @@ public class JJLogFormatter {
             switch formatSegment {
             case .message:
                 fallthrough
+            case .date:
+                fallthrough
+            case .ignore:
+                fallthrough
+            case .thread:
+                fallthrough
             case .line:
                 fallthrough
             case .file:
                 fallthrough
+            case .function:
+                fallthrough
             case .level:
                 segments.append(.token(formatSegment!, String(remainingPhrase)))
+                break
+            case .origin:
+                segments.append(.token(.origin, phrase))
                 break
             default:
                 segments.append(.token(.origin, phrase))

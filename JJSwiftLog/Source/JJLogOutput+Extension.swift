@@ -63,22 +63,22 @@ extension JJLogOutput {
             case .token(let option, let string):
                 switch option {
                 case .message:
-                    text += msg
+                    text += (msg + string)
                     break
                 case .level:
-                    text += level.stringLevel
+                    text += (level.stringLevel + string)
                     break
                 case .line:
-                    text += "\(line)"
+                    text += ("\(line)" + string)
                     break
                 case .file:
-                    text += self.fileNameWithoutSuffix(file)
+                    text += (self.fileNameWithoutSuffix(file) + string)
                     break
                 case .function:
-                    text += function
+                    text += (function + string)
                     break
                 case .date:
-                    text += self.formatDate(JJLogOutputConfig.formatter)
+                    text += (self.formatDate(JJLogOutputConfig.formatter) + string)
                     break
                 case .thread:
                     text += thread.isEmpty ? "" : thread
@@ -86,9 +86,13 @@ extension JJLogOutput {
                 case .origin:
                     text += string
                     break
+                case .ignore:
+                    text += string
+                    break
                 }
             }
         }
+        text += JJLogOutputConfig.newline
         return text
     }
     
