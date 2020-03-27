@@ -14,7 +14,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        if let file = JJFileOutput() {
+            jjLogger.addLogOutput(file)
+        }
+        #if DEBUG
+        jjLogger.addLogOutput(JJConsoleOutput())
+        #endif
+        
+        jjLogger.format = "%M %F %L%l %f %D"
+        jjLogger.onlyLogFile("ViewController")
+        
+        jjLogger.verbose("verbose")
+        jjLogger.debug("debug")
+        jjLogger.info("info")
+        jjLogger.warning("warn")
+        jjLogger.error("error")
         return true
     }
 

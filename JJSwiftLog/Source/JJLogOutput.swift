@@ -21,6 +21,30 @@ internal struct JJLogOutputConfig {
     static let newline = "\n"
     
     static let point = "."
+    
+    /// 根据数据获取文件名
+    /// - Parameter file: 文件路径
+    static func fileNameOfFile(_ file: String) -> String {
+        let fileParts = file.components(separatedBy: "/")
+        if let lastPart = fileParts.last {
+            return lastPart
+        }
+        return ""
+    }
+    
+    /// 获取文件名不带后缀
+    /// - Parameter file: 文件路径
+    static public func fileNameWithoutSuffix(_ file: String) -> String {
+        let fileName = fileNameOfFile(file)
+
+        if !fileName.isEmpty {
+            let fileNameParts = fileName.components(separatedBy: ".")
+            if let firstPart = fileNameParts.first {
+                return firstPart
+            }
+        }
+        return ""
+    }
 }
 
 /// 抽象日志的协议

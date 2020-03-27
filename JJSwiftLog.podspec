@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JJSwiftLog'
-  s.version          = '0.0.2'
+  s.version          = '0.0.3'
   s.summary          = 'High performance swift log module.'
 
 # This description is used to generate tags and improve search results.
@@ -34,12 +34,6 @@ High performance swift log,support customer log.
 
   s.subspec 'Main' do |spec|
     spec.source_files = 'JJSwiftLog/Source/*.{swift}'
-  end
-
-  s.subspec 'Bugly' do |spec|
-    spec.source_files = 'JJSwiftLog/Source/Vendor/BuglyOutput.swift'
-    spec.vendored_frameworks = 'JJSwiftLog/Source/VendorLibraries/Bugly/*.framework'
-    spec.dependency 'JJSwiftLog/Main'
   end
 
 end

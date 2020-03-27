@@ -11,20 +11,29 @@ import Foundation
 
 /// 格式化选项
 public enum FormatterOption: String {
+    // 信息
     case message = "M"
+    // 日志级别
     case level = "L"
+    // 日志行数
     case line = "l"
+    // 日志文件
     case file = "F"
+    // 函数名
     case function = "f"
+    // 日期
     case date = "D"
+    // 线程
     case thread = "T"
+    // 原始字符串
     case origin = "origin"
+    // 忽略
     case ignore = "I"
 }
 
 /// 格式化结果
 public enum LogSegment {
-    
+    /// 第一参数是日志类型，第二个参数代表有可能是原始字符串，有可能是尾部字符
     case token(FormatterOption, String)
     
 }
@@ -41,6 +50,7 @@ public final class JJLogFormatter {
         
     }
     
+    /// 根据格式化生成日志段，输出日志时，再用日志段格式化
     lazy public var segments = {
         return [LogSegment]()
     }()

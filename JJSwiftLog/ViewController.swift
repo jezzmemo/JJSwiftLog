@@ -11,14 +11,7 @@ import UIKit
 class ViewController: UIViewController {
 
     func setupLog() {
-        if let file = JJFileOutput() {
-            jjLogger.addLogOutput(file)
-        }
-        #if DEBUG
-        jjLogger.addLogOutput(JJConsoleOutput())
-        #endif
-        
-        jjLogger.format = "12321321%%M%F%L%l %f %D9999"
+
     }
     
     func setupVendor() {

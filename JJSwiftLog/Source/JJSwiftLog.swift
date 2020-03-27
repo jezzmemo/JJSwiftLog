@@ -127,7 +127,7 @@ public struct JJSwiftLog {
         
         
         /// 如果onlyShowLogFileName配置过且不等于当前文件名，将忽略本次日志
-        if let fileName = onlyShowLogFileName, fileName != file {
+        if let fileName = onlyShowLogFileName,  JJLogOutputConfig.fileNameWithoutSuffix(file) != fileName {
             return
         }
         

@@ -45,7 +45,7 @@ extension JJLogOutput {
         var text = ""
         text += self.formatDate(JJLogOutputConfig.formatter) + JJLogOutputConfig.padding
         text += thread.isEmpty ? "" : (thread + JJLogOutputConfig.padding)
-        text += self.fileNameWithoutSuffix(file)  + JJLogOutputConfig.point
+        text += JJLogOutputConfig.fileNameWithoutSuffix(file)  + JJLogOutputConfig.point
         text += function + JJLogOutputConfig.padding
         text += "\(line)" + JJLogOutputConfig.padding
         text += level.stringLevel + JJLogOutputConfig.padding
@@ -54,6 +54,14 @@ extension JJLogOutput {
         return text
     }
     
+    /// 自定义格式的日志
+    /// - Parameters:
+    ///   - level: 日志级别
+    ///   - msg: 信息
+    ///   - thread: 线程
+    ///   - file: 文件名
+    ///   - function: 函数
+    ///   - line: 行数
     func formatSegmentMessage(level: JJSwiftLog.Level, msg: String, thread: String,
                               file: String, function: String, line: Int) -> String {
         var text = ""
@@ -72,7 +80,7 @@ extension JJLogOutput {
                     text += ("\(line)" + string)
                     break
                 case .file:
-                    text += (self.fileNameWithoutSuffix(file) + string)
+                    text += (JJLogOutputConfig.fileNameWithoutSuffix(file) + string)
                     break
                 case .function:
                     text += (function + string)
@@ -94,30 +102,6 @@ extension JJLogOutput {
         }
         text += JJLogOutputConfig.newline
         return text
-    }
-    
-    /// 根据数据获取文件名
-    /// - Parameter file: 文件路径
-    func fileNameOfFile(_ file: String) -> String {
-        let fileParts = file.components(separatedBy: "/")
-        if let lastPart = fileParts.last {
-            return lastPart
-        }
-        return ""
-    }
-    
-    /// 获取文件名不带后缀
-    /// - Parameter file: 文件路径
-    func fileNameWithoutSuffix(_ file: String) -> String {
-        let fileName = fileNameOfFile(file)
-
-        if !fileName.isEmpty {
-            let fileNameParts = fileName.components(separatedBy: ".")
-            if let firstPart = fileNameParts.first {
-                return firstPart
-            }
-        }
-        return ""
     }
     
     /// 格式化日期
