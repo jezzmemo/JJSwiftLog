@@ -20,6 +20,9 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        jjLogger.enable = true
+        
         setupLog()
         setupVendor()
         jjLogger.verbose("verbose")
