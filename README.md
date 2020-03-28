@@ -9,11 +9,11 @@
 
 ## 主要功能
 
-* 控制台展示(Console Log)
+- [x] 控制台展示(Console Log)
 
-* 日志文件存储(File Log)
+- [x] 日志文件存储(File Log)
 
-* 用户自定义日志
+- [x] 用户自定义日志,实现`JJLogOutput`协议即可
 
 ## 如何安装
 
@@ -76,7 +76,7 @@ override func viewDidLoad() {
 jjLogger.enable = true
 ```
 
-* 使用onlyShowLogFileName属性，让指定文件显示日志
+* 使用`onlyLogFile`方法，让指定文件显示日志
 
 ```swift
 jjLogger.onlyLogFile("ViewController")
@@ -130,7 +130,7 @@ jjLogger.format = "%M %F %L%l %f %D"
 ```
 
 ## TODO
-* 支持Mac OS X
+* 支持Linux跨平台
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)

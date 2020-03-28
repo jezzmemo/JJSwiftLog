@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JJSwiftLog'
-  s.version          = '0.0.3'
+  s.version          = '0.0.4'
   s.summary          = 'High performance swift log module.'
 
 # This description is used to generate tags and improve search results.
@@ -27,6 +27,10 @@ High performance swift log,support customer log.
   s.source           = { :git => 'https://github.com/jezzmemo/JJSwiftLog.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '9.0'
+  s.osx.deployment_target = "10.9"
+  s.watchos.deployment_target = "2.0"
+  s.tvos.deployment_target = "9.0"
+
   s.swift_versions = ['4.0','4.2','5.0']
   s.default_subspec = 'Main'
 
