@@ -82,6 +82,24 @@ jjLogger.enable = true
 jjLogger.onlyLogFile("ViewController")
 ```
 
+* JJSwiftLog支持自定义格式日志，以下表格是简写字母对应关系:
+
+| 简写   | 描述     |
+|------|--------|
+| %M | 日志文本 |
+| %L | 日志级别 |
+| %l | 行数 |
+| %F | 文件名 |
+| %f | 函数名 |
+| %D | 日期(目前仅支持yyyy-MM-dd HH:mm:ss.SSS) |
+| %T | 线程，如果主线程不显示，子线程显示地址 |
+
+代码示例:
+
+```swift
+jjLogger.format = "%M %F %L%l %f %D"
+```
+
 * 高级使用，根据需要实现自定义接口`JJLogOutput`，示例如下:
 
 ```swift
@@ -109,24 +127,6 @@ public struct CustomerOutput: JJLogOutput {
     }
     
 }
-```
-
-* JJSwiftLog支持自定义格式日志，以下表格是简写字母对应关系:
-
-| 简写   | 描述     |
-|------|--------|
-| %M | 日志文本 |
-| %L | 日志级别 |
-| %l | 行数 |
-| %F | 文件名 |
-| %f | 函数名 |
-| %D | 日期(目前仅支持yyyy-MM-dd HH:mm:ss.SSS) |
-| %T | 线程，如果主线程不显示，子线程显示地址 |
-
-代码示例:
-
-```swift
-jjLogger.format = "%M %F %L%l %f %D"
 ```
 
 ## TODO
