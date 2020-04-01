@@ -136,7 +136,9 @@ public struct CustomerOutput: JJLogOutput {
 ```
 
 ## TODO
+
 * 支持Linux跨平台
+* 支持控制台和文件彩色显示
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)
