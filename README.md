@@ -1,5 +1,5 @@
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/JJSwiftLog.svg)](https://img.shields.io/cocoapods/v/JJSwiftLog.svg)
-<a href="https://swift.org" target="_blank"><img src="https://img.shields.io/badge/Language-Swift%203,%204%20&%205-orange.svg" alt="Language Swift 4 & 5"></a>
+<a href="https://swift.org" target="_blank"><img src="https://img.shields.io/badge/Language-Swift%204%20&%205-orange.svg" alt="Language Swift 4 & 5"></a>
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Platform](https://img.shields.io/cocoapods/p/JJSwiftLog.svg?style=flat)](http://cocoadocs.org/docsets/JJSwiftLog)
 ![License MIT](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)
