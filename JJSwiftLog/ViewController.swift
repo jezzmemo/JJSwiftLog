@@ -25,11 +25,11 @@ class ViewController: UIViewController {
         
         setupLog()
         setupVendor()
-        jjLogger.verbose("verbose")
-        jjLogger.debug("debug")
-        jjLogger.info("info")
-        jjLogger.warning("warn")
-        jjLogger.error("error")
+        jjLogger.verbose("Start the record")
+        jjLogger.debug("Debug the world")
+        jjLogger.info("Show log info")
+        jjLogger.warning("Build warning")
+        jjLogger.error("can’t fetch user info without user id")
     
     }
 

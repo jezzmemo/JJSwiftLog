@@ -26,6 +26,21 @@ extension JJSwiftLog.Level {
         }
     }
     
+    public var emojiLevel: String {
+        switch self {
+        case .verbose:
+            return "📗"
+        case .debug:
+            return "📘"
+        case .info:
+            return "📓"
+        case .warning:
+            return "📙"
+        case .error:
+            return "📕"
+        }
+    }
+    
 }
 
 extension JJLogOutput {
@@ -44,6 +59,7 @@ extension JJLogOutput {
         }
         var text = ""
         text += self.formatDate(JJLogOutputConfig.formatter) + JJLogOutputConfig.padding
+        text += level.emojiLevel + JJLogOutputConfig.padding
         text += thread.isEmpty ? "" : (thread + JJLogOutputConfig.padding)
         text += JJLogOutputConfig.fileNameWithoutSuffix(file)  + JJLogOutputConfig.point
         text += function + JJLogOutputConfig.padding
@@ -122,9 +138,18 @@ extension JJLogOutput {
     /// - Parameter filePointer: UnsafeMutablePointer<FILE>
     func writeStringToFile(_ string: String, filePointer: UnsafeMutablePointer<FILE>) {
         string.withCString { ptr in
-            flockfile(filePointer)
+            
+            #if os(Windows)
+             _lock_file(filePointer)
+             #else
+             flockfile(filePointer)
+             #endif
             defer {
+                #if os(Windows)
+                _unlock_file(filePointer)
+                #else
                 funlockfile(filePointer)
+                #endif
             }
             
             _ = fputs(ptr, filePointer)

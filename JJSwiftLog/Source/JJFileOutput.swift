@@ -44,11 +44,29 @@ public struct JJFileOutput: JJLogOutput {
         if let filePath = filePath {
             logFilePath = filePath
         } else {
+            #if os(tvOS) || os(iOS) || os(watchOS)
+            guard let appURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
+                return nil
+            }
+            
+            #elseif os(macOS)
             guard let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
                 return nil
             }
             
-            let logFileURL = url.appendingPathComponent("jjlogger.log", isDirectory: false)
+            guard let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleExecutable") as? String else{
+                return nil
+            }
+            
+            let appURL = url.appendingPathComponent(appName, isDirectory: true)
+            try? FileManager.default.createDirectory(at: appURL,withIntermediateDirectories: true, attributes: nil)
+            
+            #elseif os(Linux)
+            let appURL = URL(fileURLWithPath: "/var/cache/")
+            #else
+            //TODO: Windows
+            #endif
+            let logFileURL = appURL.appendingPathComponent("jjlogger.log", isDirectory: false)
             logFilePath = logFileURL.relativePath
         }
         
@@ -73,10 +91,9 @@ public struct JJFileOutput: JJLogOutput {
         _logQueue = DispatchQueue(label: "JJLogFile" ,target: _logQueue)
     }
     
-    public func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) -> String? {
+    public func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) {
         let formatMessage = self.formatMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
         self.write(string: formatMessage)
-        return formatMessage
     }
     
     /// 写入日志信息到文件

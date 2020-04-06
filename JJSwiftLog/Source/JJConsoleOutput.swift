@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Darwin
 
 /// 控制台输出
 ///
@@ -38,13 +37,18 @@ public struct JJConsoleOutput: JJLogOutput {
     
     public init() {
         _consoleQueue = DispatchQueue(label: "JJConsoleOutput",target: _consoleQueue)
+        #if os(macOS) || os(tvOS) || os(iOS) || os(watchOS)
         _filePointer = Darwin.stdout
+        #elseif os(Windows)
+        _filePointer = MSVCRT.stdout
+        #else
+        _filePointer = Glibc.stdout
+        #endif
     }
     
-    public func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) -> String? {
+    public func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) {
         let message = self.formatMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
         self.writeMessageToConsole(message)
-        return message
     }
     
     private func writeMessageToConsole(_ message: String) {

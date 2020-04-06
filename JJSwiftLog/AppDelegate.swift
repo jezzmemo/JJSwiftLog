@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         jjLogger.addLogOutput(JJConsoleOutput())
         #endif
         
-        jjLogger.format = "%M %F %L%l %f %D"
+//        jjLogger.format = "%M %F %L%l %f %D"
         jjLogger.onlyLogFile("ViewController")
         
         jjLogger.verbose("verbose")

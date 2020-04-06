@@ -65,7 +65,7 @@ public protocol JJLogOutput {
     /// - Parameter file: 日志所在文件
     /// - Parameter function: 日志所在函数
     /// - Parameter line: 日志所在行数
-    func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) -> String?
+    func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int)
     
     /// 日志级别，可读写
     var logLevel: JJSwiftLog.Level {
