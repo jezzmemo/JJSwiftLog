@@ -1,4 +1,5 @@
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/JJSwiftLog.svg)](https://img.shields.io/cocoapods/v/JJSwiftLog.svg)
+<a href="https://swift.org" target="_blank"><img src="https://img.shields.io/badge/Language-Swift%204%20&%205-orange.svg" alt="Language Swift 4 & 5"></a>
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Platform](https://img.shields.io/cocoapods/p/JJSwiftLog.svg?style=flat)](http://cocoadocs.org/docsets/JJSwiftLog)
 ![License MIT](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)
@@ -137,8 +138,7 @@ public struct CustomerOutput: JJLogOutput {
 
 ## TODO
 
-* 支持Linux跨平台
-* 支持控制台和文件彩色显示
+* 单元测试
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)

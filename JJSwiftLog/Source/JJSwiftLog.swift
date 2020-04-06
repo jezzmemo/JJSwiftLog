@@ -146,7 +146,7 @@ public struct JJSwiftLog {
             }
             
             outputQueue.async {
-                _ = output.log(level, msg: message, thread: threadName, file: file, function: function, line: line)
+                output.log(level, msg: message, thread: threadName, file: file, function: function, line: line)
             }
         }
     }
