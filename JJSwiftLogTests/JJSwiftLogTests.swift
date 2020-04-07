@@ -19,16 +19,17 @@ class JJSwiftLogTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testJJLogOutput() {
+        XCTAssertTrue(JJLogOutputConfig.fileNameOfFile("/test/test.suffix") == "test.suffix")
+        XCTAssertTrue(JJLogOutputConfig.fileNameOfFile("/test/test") == "test")
+        XCTAssertTrue(JJLogOutputConfig.fileNameOfFile("/test/") == "")
+        XCTAssertTrue(JJLogOutputConfig.fileNameOfFile("/test") == "test")
+        XCTAssertTrue(JJLogOutputConfig.fileNameOfFile("") == "")
+        
+        XCTAssertTrue(JJLogOutputConfig.fileNameWithoutSuffix("/test/test.suffix") == "test")
+        XCTAssertTrue(JJLogOutputConfig.fileNameWithoutSuffix("/test/test") == "test")
+        XCTAssertTrue(JJLogOutputConfig.fileNameWithoutSuffix("/test/") == "")
+        XCTAssertTrue(JJLogOutputConfig.fileNameWithoutSuffix("") == "")
     }
 
 }
