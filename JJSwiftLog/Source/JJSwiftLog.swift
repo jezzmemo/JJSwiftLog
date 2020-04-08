@@ -39,7 +39,7 @@ public struct JJSwiftLog {
     /// 是否启用，默认是打开的
     public static var enable = true
     
-    /// 格式化日志，默认是`%date %thread %file %fun %line %level,%message`
+    /// 格式化日志
     public static var format: String? {
         didSet {
             if self.format != nil {
@@ -47,6 +47,9 @@ public struct JJSwiftLog {
             }
         }
     }
+    
+    /// 内置简单的自定义日志样式
+    public static let simpleFormat = "%D -> %F:%l - %f %M"
     
     /// 日志输出集合，用于多个输出，由各自的业务特点控制输出
     /// - Parameter output: JJLogOutput

@@ -21,7 +21,7 @@
 
 - [x] 只显示指定文件日志
 
-- [x] 自定义日志格式
+- [x] 自定义日志格式, 内置样式供开发者选择
 
 ## 如何安装
 
@@ -106,6 +106,17 @@ jjLogger.onlyLogFile("ViewController")
 
 ```swift
 jjLogger.format = "%M %F %L%l %f %D"
+```
+
+还内置了一些样式，如:`jjLogger.format = JJSwiftLog.simpleFormat`,样式如下:
+
+```
+2020-04-08 22:56:54.888+0800 -> ViewController:18 - setupVendor(parameter:) method set the parameter
+2020-04-08 22:56:54.889+0800 -> ViewController:28 - viewDidLoad() Start the record
+2020-04-08 22:56:54.889+0800 -> ViewController:29 - viewDidLoad() Debug the world
+2020-04-08 22:56:54.890+0800 -> ViewController:30 - viewDidLoad() Show log info
+2020-04-08 22:56:54.890+0800 -> ViewController:31 - viewDidLoad() Build warning
+2020-04-08 22:56:54.890+0800 -> ViewController:32 - viewDidLoad() can’t fetch user info without user id
 ```
 
 * 高级使用，根据需要实现自定义接口`JJLogOutput`，示例如下:

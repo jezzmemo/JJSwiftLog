@@ -31,5 +31,16 @@ class JJSwiftLogTests: XCTestCase {
         XCTAssertTrue(JJLogOutputConfig.fileNameWithoutSuffix("/test/") == "")
         XCTAssertTrue(JJLogOutputConfig.fileNameWithoutSuffix("") == "")
     }
+    
+    func testLogFormat() {
+        JJLogFormatter.shared.formatLog("")
+        XCTAssert(JJLogFormatter.shared.segments.count == 0)
+        
+        JJLogFormatter.shared.formatLog("1")
+        XCTAssert(JJLogFormatter.shared.segments.count == 1)
+        
+        JJLogFormatter.shared.formatLog("%M")
+        XCTAssert(JJLogFormatter.shared.segments.count == 2)
+    }
 
 }

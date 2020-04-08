@@ -14,8 +14,8 @@ class ViewController: UIViewController {
 
     }
     
-    func setupVendor() {
-        
+    func setupVendor(parameter: String) {
+        jjLogger.verbose("method set the parameter")
     }
     
     override func viewDidLoad() {
@@ -24,7 +24,7 @@ class ViewController: UIViewController {
         jjLogger.enable = true
         
         setupLog()
-        setupVendor()
+        setupVendor(parameter: "Show the error log")
         jjLogger.verbose("Start the record")
         jjLogger.debug("Debug the world")
         jjLogger.info("Show log info")

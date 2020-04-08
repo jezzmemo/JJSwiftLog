@@ -58,6 +58,13 @@ public final class JJLogFormatter {
     /// 格式化字符串生成日志片段
     /// - Parameter formatter: 格式化字符
     func formatLog(_ formatter: String) {
+        
+        if formatter.count == 0 {
+            return
+        }
+        
+        self.segments.removeAll()
+        
         let phrases = ("%I" + formatter).components(separatedBy: "%")
         
         for phrase in phrases where !phrase.isEmpty {

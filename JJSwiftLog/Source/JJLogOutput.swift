@@ -14,7 +14,7 @@ internal struct JJLogOutputConfig {
     
     static let padding = " "
     
-    static let formatter = "yyyy-MM-dd HH:mm:ss.SSS"
+    static let formatter = "yyyy-MM-dd HH:mm:ss.SSSZ"
     
     static let formatDate = DateFormatter()
     
