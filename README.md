@@ -99,7 +99,7 @@ jjLogger.onlyLogFile("ViewController")
 | %l | 行数 |
 | %F | 文件名 |
 | %f | 函数名 |
-| %D | 日期(目前仅支持yyyy-MM-dd HH:mm:ss.SSS) |
+| %D | 日期(目前仅支持yyyy-MM-dd HH:mm:ss.SSSZ) |
 | %T | 线程，如果主线程不显示，子线程显示地址 |
 
 代码示例:
