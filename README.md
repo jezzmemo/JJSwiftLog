@@ -147,9 +147,10 @@ public struct CustomerOutput: JJLogOutput {
 }
 ```
 
-## TODO
+## TODO(记得给我星哦)
 
-* 单元测试
+* 内置更多自定义格式
+* 文件名字多样化
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)
