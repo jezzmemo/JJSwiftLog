@@ -8,9 +8,10 @@
 
 import Foundation
 
-
+/// Extension for JJSwiftLog.Level
 extension JJSwiftLog.Level {
-    
+
+    /// String level
     public var stringLevel: String {
         switch self {
         case .verbose:
@@ -25,7 +26,8 @@ extension JJSwiftLog.Level {
             return "ERROR"
         }
     }
-    
+
+    /// Emoji level
     public var emojiLevel: String {
         switch self {
         case .verbose:
@@ -54,7 +56,7 @@ extension JJLogOutput {
     /// - Parameter line: 日志当前行
     func formatMessage(level: JJSwiftLog.Level, msg: String, thread: String,
                        file: String, function: String, line: Int) -> String {
-        if JJLogFormatter.shared.segments.count > 0 {
+        if !JJLogFormatter.shared.segments.isEmpty {
             return formatSegmentMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
         }
         var text = ""
@@ -69,15 +71,16 @@ extension JJLogOutput {
         text += JJLogOutputConfig.newline
         return text
     }
-    
-    /// 自定义格式的日志
+
+    /// Format segment message
     /// - Parameters:
-    ///   - level: 日志级别
-    ///   - msg: 信息
-    ///   - thread: 线程
-    ///   - file: 文件名
-    ///   - function: 函数
-    ///   - line: 行数
+    ///   - level: Log level
+    ///   - msg: Text message
+    ///   - thread: Thread name
+    ///   - file: File name
+    ///   - function: Function
+    ///   - line: Function line number
+    /// - Returns: All info string
     func formatSegmentMessage(level: JJSwiftLog.Level, msg: String, thread: String,
                               file: String, function: String, line: Int) -> String {
         var text = ""
@@ -88,31 +91,22 @@ extension JJLogOutput {
                 switch option {
                 case .message:
                     text += (msg + string)
-                    break
                 case .level:
                     text += (level.stringLevel + string)
-                    break
                 case .line:
                     text += ("\(line)" + string)
-                    break
                 case .file:
                     text += (JJLogOutputConfig.fileNameWithoutSuffix(file) + string)
-                    break
                 case .function:
                     text += (function + string)
-                    break
                 case .date:
                     text += (self.formatDate(JJLogOutputConfig.formatter) + string)
-                    break
                 case .thread:
                     text += thread.isEmpty ? "" : thread
-                    break
                 case .origin:
                     text += string
-                    break
                 case .ignore:
                     text += string
-                    break
                 }
             }
         }
@@ -120,9 +114,9 @@ extension JJLogOutput {
         return text
     }
     
-    /// 格式化日期
-    /// - Parameter dateFormat: 日期格式
-    /// - Parameter timeZone: 时区
+    /// Format date
+    /// - Parameter dateFormat: Date format
+    /// - Parameter timeZone: timeZone
     func formatDate(_ dateFormat: String, timeZone: String = "") -> String {
         
         if !timeZone.isEmpty {
@@ -133,7 +127,7 @@ extension JJLogOutput {
         return dateStr
     }
     
-    /// 安全写入字符串到FILE
+    /// Write string to filepointer
     /// - Parameter string: string
     /// - Parameter filePointer: UnsafeMutablePointer<FILE>
     func writeStringToFile(_ string: String, filePointer: UnsafeMutablePointer<FILE>) {

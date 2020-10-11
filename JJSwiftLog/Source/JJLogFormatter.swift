@@ -8,39 +8,39 @@
 
 import Foundation
 
-
-/// 格式化选项
+/// Formatter option
 public enum FormatterOption: String {
-    // 信息
+    // Text message
     case message = "M"
-    // 日志级别
+    // Log level
     case level = "L"
-    // 日志行数
+    // Log number
     case line = "l"
-    // 日志文件
+    // Log file
     case file = "F"
-    // 函数名
+    // Log function
     case function = "f"
-    // 日期
+    // Date
     case date = "D"
-    // 线程
+    // Thread name
     case thread = "T"
-    // 原始字符串
+    // Origin text
     case origin = "origin"
-    // 忽略
+    // Ignore text
     case ignore = "I"
 }
 
-/// 格式化结果
+/// Format log segment
 public enum LogSegment {
-    /// 第一参数是日志类型，第二个参数代表有可能是原始字符串，有可能是尾部字符
+    /// Log token
     case token(FormatterOption, String)
     
 }
 
-/// 处理格式化配置，生产内部定义
+/// JJLogFormatter
 public final class JJLogFormatter {
-    
+
+    /// Singleton JJLogFormatter
     public static let shared: JJLogFormatter = {
         let format = JJLogFormatter()
         return format
@@ -50,16 +50,16 @@ public final class JJLogFormatter {
         
     }
     
-    /// 根据格式化生成日志段，输出日志时，再用日志段格式化
+    /// Generata segments array
     lazy public var segments = {
         return [LogSegment]()
     }()
     
-    /// 格式化字符串生成日志片段
-    /// - Parameter formatter: 格式化字符
+    /// Format log will generate segments
+    /// - Parameter formatter: formatter string
     func formatLog(_ formatter: String) {
         
-        if formatter.count == 0 {
+        if formatter.isEmpty {
             return
         }
         
@@ -76,39 +76,23 @@ public final class JJLogFormatter {
             let rangeAfterFormatChar = phrase.index(formatCharIndex, offsetBy: 1)..<phrase.endIndex
             let remainingPhrase = phrase[rangeAfterFormatChar]
             
-            let formatSegment = FormatterOption(rawValue:String(formatChar))
+            let formatSegment = FormatterOption(rawValue: String(formatChar))
             
             switch formatSegment {
-            case .message:
-                fallthrough
-            case .date:
-                fallthrough
-            case .ignore:
-                fallthrough
-            case .thread:
-                fallthrough
-            case .line:
-                fallthrough
-            case .file:
-                fallthrough
-            case .function:
-                fallthrough
-            case .level:
+            case .message, .date, .level, .ignore, .thread, .line, .file, .function:
                 segments.append(.token(formatSegment!, String(remainingPhrase)))
-                break
             case .origin:
                 segments.append(.token(.origin, phrase))
-                break
             default:
                 segments.append(.token(.origin, phrase))
-                break
             }
             
         }
     }
-    
-    /// 解析字符串和偏移量
-    /// - Parameter text: 字符串
+
+    /// Parse the prefix number
+    /// - Parameter text: string
+    /// - Returns: If prefix 0...9 will return num and numString count
     func parsePadding(_ text: String) -> (Int, Int) {
         let sign: Int = 1
         

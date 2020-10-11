@@ -34,7 +34,7 @@ class JJSwiftLogTests: XCTestCase {
     
     func testLogFormat() {
         JJLogFormatter.shared.formatLog("")
-        XCTAssert(JJLogFormatter.shared.segments.count == 0)
+        XCTAssertTrue(JJLogFormatter.shared.segments.isEmpty)
         
         JJLogFormatter.shared.formatLog("1")
         XCTAssert(JJLogFormatter.shared.segments.count == 1)

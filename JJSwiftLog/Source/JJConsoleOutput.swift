@@ -8,18 +8,18 @@
 
 import Foundation
 
-/// 控制台输出
+/// Console log
 ///
-/// 这里控制输出并没有使用print,NSLog，而是使用UNIX的stdout
+/// Implement UNIX's `stdout`
 public struct JJConsoleOutput: JJLogOutput {
     
-    /// 操作文件的指针
+    /// File pointer
     private let _filePointer: UnsafeMutablePointer<FILE>?
     
-    /// Console自定义队列
-    private var _consoleQueue: DispatchQueue? = nil
+    /// Console queue
+    private var _consoleQueue: DispatchQueue?
     
-    /// Console默认日志级别是verbose
+    /// Default log level verbose
     private var _consoleLevel: JJSwiftLog.Level = .verbose
     
     public var queue: DispatchQueue? {
@@ -36,7 +36,7 @@ public struct JJConsoleOutput: JJLogOutput {
     }
     
     public init() {
-        _consoleQueue = DispatchQueue(label: "JJConsoleOutput",target: _consoleQueue)
+        _consoleQueue = DispatchQueue(label: "JJConsoleOutput", target: _consoleQueue)
         #if os(macOS) || os(tvOS) || os(iOS) || os(watchOS)
         _filePointer = Darwin.stdout
         #elseif os(Windows)
@@ -56,6 +56,5 @@ public struct JJConsoleOutput: JJLogOutput {
             self.writeStringToFile(message, filePointer: self._filePointer!)
         }
     }
-    
     
 }

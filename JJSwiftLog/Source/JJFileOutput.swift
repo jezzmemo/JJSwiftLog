@@ -8,20 +8,22 @@
 
 import Foundation
 
-/// 日志文件输出
+/// Save the log to file
+///
+/// Implement by the FILE Pointer
 public struct JJFileOutput: JJLogOutput {
     
-    /// 操作文件的指针
+    /// File pointer
     private let _filePointer: UnsafeMutablePointer<FILE>?
     
-    /// 文件的绝对地址
+    /// File path
     private(set) var logFilePath: String?
     
-    /// 默认文件日志级别verbose
+    /// Default file level verbose
     private var _logLevel: JJSwiftLog.Level = .verbose
     
-    /// 文件日志的队列
-    private var _logQueue: DispatchQueue? = nil
+    /// File queue
+    private var _logQueue: DispatchQueue?
     
     public var logLevel: JJSwiftLog.Level {
         get {
@@ -36,9 +38,9 @@ public struct JJFileOutput: JJLogOutput {
         return _logQueue
     }
     
-    /// 初始化文件路径，是可选类型，如果nil，默认将给用户存储在cachesDirectory
+    /// if filePath nil，the log will save to `cachesDirectory`
     ///
-    /// - Parameter filePath: 文件路径
+    /// - Parameter filePath: File path
     public init?(filePath: String? = nil) {
         
         if let filePath = filePath {
@@ -54,12 +56,12 @@ public struct JJFileOutput: JJLogOutput {
                 return nil
             }
             
-            guard let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleExecutable") as? String else{
+            guard let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleExecutable") as? String else {
                 return nil
             }
             
             let appURL = url.appendingPathComponent(appName, isDirectory: true)
-            try? FileManager.default.createDirectory(at: appURL,withIntermediateDirectories: true, attributes: nil)
+            try? FileManager.default.createDirectory(at: appURL, withIntermediateDirectories: true, attributes: nil)
             
             #elseif os(Linux)
             let appURL = URL(fileURLWithPath: "/var/cache/")
@@ -88,7 +90,7 @@ public struct JJFileOutput: JJLogOutput {
         }
         #endif
         
-        _logQueue = DispatchQueue(label: "JJLogFile" ,target: _logQueue)
+        _logQueue = DispatchQueue(label: "JJLogFile", target: _logQueue)
     }
     
     public func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) {
@@ -96,11 +98,11 @@ public struct JJFileOutput: JJLogOutput {
         self.write(string: formatMessage)
     }
     
-    /// 写入日志信息到文件
-    /// - Parameter string: 日志信息
+    /// Write log to file
+    /// - Parameter string: Log text
     private func write(string: String) {
         
-        //检查文件是否存在，不存在需要重新创建
+        //Check file exist, if not exist will recreate
         if access(logFilePath, F_OK) == -1 {
             freopen(logFilePath, "w+", _filePointer)
         }
