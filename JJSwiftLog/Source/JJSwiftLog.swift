@@ -11,6 +11,9 @@ import Foundation
 /// JJSwiftLog short name
 public let jjLogger = JJSwiftLog.self
 
+/// New JJSwiftLog short name
+public let JJLogger = JJSwiftLog.self
+
 /// JJSwiftLog main
 ///
 /// JJSwiftLog(Console,File,Network)，Support customer process the log

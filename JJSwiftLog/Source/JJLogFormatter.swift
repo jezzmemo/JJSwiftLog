@@ -20,8 +20,12 @@ public enum FormatterOption: String {
     case file = "F"
     // Log function
     case function = "f"
-    // Date
+    // Date, format: yyyy-MM-dd HH:mm:ss.SSSZ
     case date = "D"
+    // Only Date, format: yyyy-MM-dd
+    case onlyDate = "d"
+    // Only Time, format: HH:mm:ss
+    case time = "t"
     // Thread name
     case thread = "T"
     // Origin text
@@ -79,7 +83,7 @@ public final class JJLogFormatter {
             let formatSegment = FormatterOption(rawValue: String(formatChar))
             
             switch formatSegment {
-            case .message, .date, .level, .ignore, .thread, .line, .file, .function:
+            case .message, .date, .level, .ignore, .thread, .line, .file, .function, .onlyDate, .time:
                 segments.append(.token(formatSegment!, String(remainingPhrase)))
             case .origin:
                 segments.append(.token(.origin, phrase))

@@ -47,20 +47,20 @@ extension JJSwiftLog.Level {
 
 extension JJLogOutput {
     
-    /// 根据日志级别，线程，文件，函数，行数组成的字符串
-    /// - Parameter level: 日志级别
-    /// - Parameter msg: 开发输入的信息
-    /// - Parameter thread: 当前线程
-    /// - Parameter file: 文件名
-    /// - Parameter function: 函数名
-    /// - Parameter line: 日志当前行
+    /// Generate log from log level,thread,file name,function line number
+    /// - Parameter level: log level
+    /// - Parameter msg: text
+    /// - Parameter thread: thread
+    /// - Parameter file: file name
+    /// - Parameter function: function
+    /// - Parameter line: line number
     func formatMessage(level: JJSwiftLog.Level, msg: String, thread: String,
                        file: String, function: String, line: Int) -> String {
         if !JJLogFormatter.shared.segments.isEmpty {
             return formatSegmentMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
         }
         var text = ""
-        text += self.formatDate(JJLogOutputConfig.formatter) + JJLogOutputConfig.padding
+        text += self.formatDate(JJLogOutputConfig.dateTimezoneformatter) + JJLogOutputConfig.padding
         text += level.emojiLevel + JJLogOutputConfig.padding
         text += thread.isEmpty ? "" : (thread + JJLogOutputConfig.padding)
         text += JJLogOutputConfig.fileNameWithoutSuffix(file)  + JJLogOutputConfig.point
@@ -100,7 +100,11 @@ extension JJLogOutput {
                 case .function:
                     text += (function + string)
                 case .date:
-                    text += (self.formatDate(JJLogOutputConfig.formatter) + string)
+                    text += (self.formatDate(JJLogOutputConfig.dateTimezoneformatter) + string)
+                case .onlyDate:
+                    text += (self.formatDate(JJLogOutputConfig.dateFormatter) + string)
+                case .time:
+                    text += (self.formatDate(JJLogOutputConfig.timeFormatter) + string)
                 case .thread:
                     text += thread.isEmpty ? "" : thread
                 case .origin:
