@@ -77,7 +77,7 @@ extension JJLogOutput {
     ///   - level: Log level
     ///   - msg: Text message
     ///   - thread: Thread name
-    ///   - file: File name
+    ///   - file: File name, suffix extension
     ///   - function: Function
     ///   - line: Function line number
     /// - Returns: All info string

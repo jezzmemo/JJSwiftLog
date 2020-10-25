@@ -16,7 +16,7 @@ public enum FormatterOption: String {
     case level = "L"
     // Log number
     case line = "l"
-    // Log file
+    // Log file name(without extension)
     case file = "F"
     // Log function
     case function = "f"

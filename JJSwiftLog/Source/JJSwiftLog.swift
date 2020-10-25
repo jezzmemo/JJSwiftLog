@@ -53,7 +53,7 @@ public struct JJSwiftLog {
     
     /// Simple log format
     public static let simpleFormat = "%D -> %F:%l - %f %M"
-    
+
     /// Add customer process log
     /// - Parameter output: JJLogOutput
     public static func addLogOutput(_ output: JJLogOutput) {

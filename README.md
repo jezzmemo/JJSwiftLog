@@ -60,34 +60,34 @@ import JJSwiftLog
 ```swift
 func setupLog() {
      if let file = JJFileOutput() {
-         jjLogger.addLogOutput(file)
+         JJLogger.addLogOutput(file)
      }
      #if DEBUG
-     jjLogger.addLogOutput(JJConsoleOutput())
+     JJLogger.addLogOutput(JJConsoleOutput())
      #endif
 }
 
 override func viewDidLoad() {
      super.viewDidLoad()
      setupLog()
-     jjLogger.verbose("verbose")
-     jjLogger.debug("debug")   
-     jjLogger.info("info")
-     jjLogger.warning("warn")
-     jjLogger.error("error")
+     JJLogger.verbose("verbose")
+     JJLogger.debug("debug")   
+     JJLogger.info("info")
+     JJLogger.warning("warn")
+     JJLogger.error("error")
 }
 ```
 
 * 使用`enable`，实时开关日志，默认是开启的
 
 ```swift
-jjLogger.enable = true
+JJLogger.enable = true
 ```
 
 * 使用`onlyLogFile`方法，让指定文件显示日志
 
 ```swift
-jjLogger.onlyLogFile("ViewController")
+JJLogger.onlyLogFile("ViewController")
 ```
 
 * JJSwiftLog支持自定义格式日志，以下表格是简写字母对应关系:
@@ -97,18 +97,20 @@ jjLogger.onlyLogFile("ViewController")
 | %M | 日志文本 |
 | %L | 日志级别 |
 | %l | 行数 |
-| %F | 文件名 |
+| %F | 文件名，不带后缀 |
 | %f | 函数名 |
 | %D | 日期(目前仅支持yyyy-MM-dd HH:mm:ss.SSSZ) |
 | %T | 线程，如果主线程不显示，子线程显示地址 |
+| %t | 显示HH:mm:ss格式 |
+| %d | 显示yyyy-MM-dd格式 |
 
 代码示例:
 
 ```swift
-jjLogger.format = "%M %F %L%l %f %D"
+JJLogger.format = "%M %F %L%l %f %D"
 ```
 
-还内置了一些样式，如:`jjLogger.format = JJSwiftLog.simpleFormat`,样式如下:
+还内置了一些样式，如:`JJLogger.format = JJSwiftLog.simpleFormat`,样式如下:
 
 ```
 2020-04-08 22:56:54.888+0800 -> ViewController:18 - setupVendor(parameter:) method set the parameter
@@ -149,8 +151,7 @@ public struct CustomerOutput: JJLogOutput {
 
 ## TODO(记得给我星哦)
 
-* 内置更多自定义格式
-* 文件名字多样化
+* 支持控制台多种颜色(基于插件)
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)
