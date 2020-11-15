@@ -13,20 +13,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         if let file = JJFileOutput() {
-            jjLogger.addLogOutput(file)
+            JJLogger.addLogOutput(file)
         }
         #if DEBUG
-        jjLogger.addLogOutput(JJConsoleOutput())
+        JJLogger.addLogOutput(JJConsoleOutput())
         #endif
         
-        jjLogger.format = JJSwiftLog.simpleFormat
-        jjLogger.onlyLogFile("ViewController")
+        JJLogger.format = JJSwiftLog.simpleFormat
+        JJLogger.onlyLogFile("ViewController")
         
-        jjLogger.verbose("verbose")
-        jjLogger.debug("debug")
-        jjLogger.info("info")
-        jjLogger.warning("warn")
-        jjLogger.error("error")
+        JJLogger.verbose("verbose")
+        JJLogger.debug("debug")
+        JJLogger.info("info")
+        JJLogger.warning("warn")
+        JJLogger.error("error")
         return true
     }
 

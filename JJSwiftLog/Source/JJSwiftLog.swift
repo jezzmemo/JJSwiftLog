@@ -8,9 +8,6 @@
 
 import Foundation
 
-/// JJSwiftLog short name
-public let jjLogger = JJSwiftLog.self
-
 /// New JJSwiftLog short name
 public let JJLogger = JJSwiftLog.self
 
@@ -173,3 +170,7 @@ extension JJSwiftLog {
     }
     
 }
+
+/// JJSwiftLog short name
+@available(*, deprecated, message: "Please replace by JJLogger")
+public let jjLogger = JJSwiftLog.self
