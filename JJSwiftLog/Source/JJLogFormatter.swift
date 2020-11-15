@@ -32,6 +32,8 @@ public enum FormatterOption: String {
     case origin = "origin"
     // Ignore text
     case ignore = "I"
+    // Log file name with extension
+    case fileExtension = "N"
 }
 
 /// Format log segment
@@ -83,7 +85,7 @@ public final class JJLogFormatter {
             let formatSegment = FormatterOption(rawValue: String(formatChar))
             
             switch formatSegment {
-            case .message, .date, .level, .ignore, .thread, .line, .file, .function, .onlyDate, .time:
+            case .message, .date, .level, .ignore, .thread, .line, .file, .function, .onlyDate, .time, .fileExtension:
                 segments.append(.token(formatSegment!, String(remainingPhrase)))
             case .origin:
                 segments.append(.token(.origin, phrase))

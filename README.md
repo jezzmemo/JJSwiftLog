@@ -103,6 +103,7 @@ JJLogger.onlyLogFile("ViewController")
 | %T | 线程，如果主线程不显示，子线程显示地址 |
 | %t | 显示HH:mm:ss格式 |
 | %d | 显示yyyy-MM-dd格式 |
+| %N | 文件名，带后缀 |
 
 代码示例:
 
@@ -151,7 +152,7 @@ public struct CustomerOutput: JJLogOutput {
 
 ## TODO(记得给我星哦)
 
-* 支持控制台多种颜色(基于插件)
+* 加强文件处理
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)

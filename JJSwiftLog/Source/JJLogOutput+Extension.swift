@@ -97,6 +97,8 @@ extension JJLogOutput {
                     text += ("\(line)" + string)
                 case .file:
                     text += (JJLogOutputConfig.fileNameWithoutSuffix(file) + string)
+                case .fileExtension:
+                    text += (JJLogOutputConfig.fileNameOfFile(file) + string)
                 case .function:
                     text += (function + string)
                 case .date:
