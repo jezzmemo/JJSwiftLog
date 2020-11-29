@@ -12,21 +12,6 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        if let file = JJFileOutput() {
-            JJLogger.addLogOutput(file)
-        }
-        #if DEBUG
-        JJLogger.addLogOutput(JJConsoleOutput())
-        #endif
-        
-        JJLogger.format = JJSwiftLog.simpleFormat
-        JJLogger.onlyLogFile("ViewController")
-        
-        JJLogger.verbose("verbose")
-        JJLogger.debug("debug")
-        JJLogger.info("info")
-        JJLogger.warning("warn")
-        JJLogger.error("error")
         return true
     }
 

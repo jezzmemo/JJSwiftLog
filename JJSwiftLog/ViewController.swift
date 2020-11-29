@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    let file = JJFileOutput()
+
     func setupLog() {
 
     }
@@ -20,6 +22,22 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if file != nil {
+            JJLogger.addLogOutput(file!)
+        }
+        #if DEBUG
+        JJLogger.addLogOutput(JJConsoleOutput())
+        #endif
+
+        JJLogger.format = JJSwiftLog.simpleFormat
+        JJLogger.onlyLogFile("ViewController")
+
+        JJLogger.verbose("verbose")
+        JJLogger.debug("debug")
+        JJLogger.info("info")
+        JJLogger.warning("warn")
+        JJLogger.error("error")
         
         JJLogger.enable = true
         
@@ -30,7 +48,16 @@ class ViewController: UIViewController {
         JJLogger.info("Show log info")
         JJLogger.warning("Build warning")
         JJLogger.error("can’t fetch user info without user id")
-    
+    }
+
+    func testDeleteFile() {
+        file?.deleteLogFile()
+    }
+
+    func testArchiveFile() {
+        let appURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
+        let logFileURL = appURL!.appendingPathComponent("jjlogger1.log", isDirectory: false)
+        file?.archiveLogFilePath(logFileURL.path)
     }
 
 }

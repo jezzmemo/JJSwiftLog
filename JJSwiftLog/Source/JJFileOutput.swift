@@ -16,7 +16,9 @@ public struct JJFileOutput: JJLogOutput {
     /// File pointer
     private let _filePointer: UnsafeMutablePointer<FILE>?
     
-    /// File path
+    /// File path, default path is cachesDirectory
+    ///
+    /// If device space warning, the cache file will remove by the system
     private(set) var logFilePath: String?
     
     /// Default file level verbose
@@ -112,4 +114,45 @@ public struct JJFileOutput: JJLogOutput {
         }
     }
     
+}
+
+extension JJFileOutput {
+
+
+    /// Delete log file
+    /// - Returns: true delete success, false delete failed
+    public func deleteLogFile() -> Bool {
+        guard let filePath = self.logFilePath else {
+            return false
+        }
+        guard FileManager.default.fileExists(atPath: filePath)  else {
+            return false
+        }
+        do {
+            try FileManager.default.removeItem(atPath: filePath)
+            return true
+        } catch let error {
+            JJLogger.warning("Delete log file error:\(error.localizedDescription)")
+            return false
+        }
+    }
+
+    /// Archive log file to customer path
+    /// - Parameter logFilePath: Customer path
+    public func archiveLogFilePath(_ logFilePath: String) {
+        guard let filePath = self.logFilePath else {
+            return
+        }
+        guard FileManager.default.fileExists(atPath: filePath)  else {
+            return
+        }
+        do {
+            if FileManager.default.fileExists(atPath: logFilePath) {
+                try FileManager.default.removeItem(at: URL(fileURLWithPath: logFilePath))
+            }
+            try FileManager.default.copyItem(atPath: filePath, toPath: logFilePath)
+        } catch let error {
+            JJLogger.warning("Copy log file error:\(error.localizedDescription)")
+        }
+    }
 }
