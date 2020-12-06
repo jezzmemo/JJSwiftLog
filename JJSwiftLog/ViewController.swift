@@ -38,6 +38,11 @@ class ViewController: UIViewController {
         JJLogger.info("info")
         JJLogger.warning("warn")
         JJLogger.error("error")
+
+        JJLogger.verbose(123)
+        JJLogger.debug(1.2)
+        JJLogger.info(Date())
+        JJLogger.warning(["1", "2"])
         
         JJLogger.enable = true
         

@@ -91,31 +91,31 @@ public struct JJSwiftLog {
     
     /// Verbose
     /// - Parameter message: message
-    public static func verbose(_ message: @autoclosure() -> String, file: String = #file, function: String = #function, line: Int = #line) {
+    public static func verbose(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .verbose, message: message(), file: file, function: function, line: line)
     }
     
     /// Debug
     /// - Parameter message: message
-    public static func debug(_ message: @autoclosure() -> String, file: String = #file, function: String = #function, line: Int = #line) {
+    public static func debug(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .debug, message: message(), file: file, function: function, line: line)
     }
     
     /// Info
     /// - Parameter message: message
-    public static func info(_ message: @autoclosure() -> String, file: String = #file, function: String = #function, line: Int = #line) {
+    public static func info(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .info, message: message(), file: file, function: function, line: line)
     }
     
     /// Warn
      /// - Parameter message: message
-    public static func warning(_ message: @autoclosure() -> String, file: String = #file, function: String = #function, line: Int = #line) {
+    public static func warning(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .warning, message: message(), file: file, function: function, line: line)
     }
     
     /// Error
      /// - Parameter message: message
-    public static func error(_ message: @autoclosure() -> String, file: String = #file, function: String = #function, line: Int = #line) {
+    public static func error(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .error, message: message(), file: file, function: function, line: line)
     }
     
@@ -125,7 +125,7 @@ public struct JJSwiftLog {
     /// - Parameter file: file
     /// - Parameter function: function
     /// - Parameter line: line
-    public static func custom(level: JJSwiftLog.Level, message: String,
+    public static func custom(level: JJSwiftLog.Level, message: Any,
                               file: String = #file, function: String = #function, line: Int = #line) {
 
         /// Filter onlyShowLogFileName
@@ -138,6 +138,7 @@ public struct JJSwiftLog {
         }
         
         let threadName = self.threadName()
+        let resultMessage = "\(message)"
         
         for output in outputs {
             guard let outputQueue = output.queue else {
@@ -148,7 +149,7 @@ public struct JJSwiftLog {
             }
             
             outputQueue.async {
-                output.log(level, msg: message, thread: threadName, file: file, function: function, line: line)
+                output.log(level, msg: resultMessage, thread: threadName, file: file, function: function, line: line)
             }
         }
     }

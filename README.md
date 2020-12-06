@@ -55,26 +55,27 @@ __Swift Package Manager__
 import JJSwiftLog
 ```
 
-* 使用示例，__setup必须的__
+* 使用示例
 
 ```swift
-func setupLog() {
+override func viewDidLoad() {
+     super.viewDidLoad()
      if let file = JJFileOutput() {
          JJLogger.addLogOutput(file)
      }
      #if DEBUG
      JJLogger.addLogOutput(JJConsoleOutput())
      #endif
-}
-
-override func viewDidLoad() {
-     super.viewDidLoad()
-     setupLog()
      JJLogger.verbose("verbose")
      JJLogger.debug("debug")   
      JJLogger.info("info")
      JJLogger.warning("warn")
      JJLogger.error("error")
+     // 任意类型
+     JJLogger.verbose(123)
+     JJLogger.debug(1.2)
+     JJLogger.info(Date())
+     JJLogger.warning(["1", "2"])
 }
 ```
 
