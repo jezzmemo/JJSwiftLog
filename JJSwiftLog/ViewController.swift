@@ -27,7 +27,9 @@ class ViewController: UIViewController {
             JJLogger.addLogOutput(file!)
         }
         #if DEBUG
-        JJLogger.addLogOutput(JJConsoleOutput())
+        var console = JJConsoleOutput()
+        console.isUseNSLog = true
+        JJLogger.addLogOutput(console)
         #endif
 
         JJLogger.format = JJSwiftLog.simpleFormat

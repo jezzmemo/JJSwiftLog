@@ -22,6 +22,11 @@ public struct JJConsoleOutput: JJLogOutput {
     /// Default log level verbose
     private var _consoleLevel: JJSwiftLog.Level = .verbose
     
+    /// Use NSLog show console message
+    ///
+    /// Default value is false
+    public var isUseNSLog: Bool = false
+    
     public var queue: DispatchQueue? {
         return _consoleQueue
     }
@@ -48,7 +53,11 @@ public struct JJConsoleOutput: JJLogOutput {
     
     public func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) {
         let message = self.formatMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
-        self.writeMessageToConsole(message)
+        if isUseNSLog {
+            NSLog("%@", message)
+        } else {
+            self.writeMessageToConsole(message)
+        }
     }
     
     private func writeMessageToConsole(_ message: String) {
