@@ -11,7 +11,73 @@ import Foundation
 /// Save the log to file
 ///
 /// Implement by the FILE Pointer
-public struct JJFileOutput: JJLogOutput {
+public class JJFileOutput: JJLogOutput {
+    
+    public static let maxFileSize: UInt64 = 1_048_576
+    
+    public static let maxTimeInterval: TimeInterval = 600
+    
+    /// The base file name of the log file
+    private var baseFileName: String = "jjlogger"
+    
+    /// The extension of the log file name
+    private var fileExtension: String = "log"
+    
+    /// Size of the current log file
+    internal var currentLogFileSize: UInt64 = 0
+
+    /// Start time of the current log file
+    internal var currentLogStartTimeInterval: TimeInterval = 0
+    
+    // MARK: - Properties
+    public var targetMaxFileSize: UInt64 = maxFileSize {
+        didSet {
+            if targetMaxFileSize < 1 {
+                targetMaxFileSize = .max
+            }
+        }
+    }
+
+    public var targetMaxTimeInterval: TimeInterval = maxTimeInterval {
+        didSet {
+            if targetMaxTimeInterval < 1 {
+                targetMaxTimeInterval = 0
+            }
+        }
+    }
+
+    public var targetMaxLogFiles: UInt8 = 10 {
+        didSet {
+            clearLogFiles()
+        }
+    }
+
+    /// Option: the URL of the folder to store archived log files (defaults to the same folder as the initial log file)
+    public var archiveFolderURL: URL? = nil {
+        didSet {
+            guard let archiveFolderURL = archiveFolderURL else { return }
+            try? FileManager.default.createDirectory(at: archiveFolderURL, withIntermediateDirectories: true)
+        }
+    }
+    
+    lazy var archiveDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = NSLocale.current
+        formatter.dateFormat = "_yyyy-MM-dd_HH-mm-ss"
+        return formatter
+    }()
+    
+    static var defaultLogFolderURL: URL {
+        var defaultLogFolderURL: URL
+#if os(macOS)
+        defaultLogFolderURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("log")
+#elseif os(iOS) || os(tvOS) || os(watchOS)
+        let urls = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)
+        defaultLogFolderURL = urls[urls.endIndex - 1].appendingPathComponent("log")
+#endif
+        try? FileManager.default.createDirectory(at: defaultLogFolderURL, withIntermediateDirectories: true)
+        return defaultLogFolderURL
+    }
     
     /// File pointer
     private let _filePointer: UnsafeMutablePointer<FILE>?
@@ -70,7 +136,7 @@ public struct JJFileOutput: JJLogOutput {
             #else
             //TODO: Windows
             #endif
-            let logFileURL = appURL.appendingPathComponent("jjlogger.log", isDirectory: false)
+            let logFileURL = appURL.appendingPathComponent(baseFileName + "." + fileExtension, isDirectory: false)
             logFilePath = logFileURL.relativePath
         }
         
@@ -114,6 +180,71 @@ public struct JJFileOutput: JJLogOutput {
         }
     }
     
+}
+
+extension JJFileOutput {
+    
+    public func createNewFile() {
+        var archiveFolderURL: URL = (self.archiveFolderURL ?? JJFileOutput.defaultLogFolderURL)
+        archiveFolderURL = archiveFolderURL.appendingPathComponent("\(baseFileName)\(archiveDateFormatter.string(from: Date()))")
+        archiveFolderURL = archiveFolderURL.appendingPathExtension(fileExtension)
+
+        currentLogStartTimeInterval = Date().timeIntervalSince1970
+        currentLogFileSize = 0
+
+        clearLogFiles()
+    }
+    
+    func clearLogFiles() {
+        var archivedFileURLs: [URL] = self.archivedURLs()
+        guard archivedFileURLs.count > Int(targetMaxLogFiles) else { return }
+        
+        archivedFileURLs.removeFirst(Int(targetMaxLogFiles))
+        
+        let fileManager: FileManager = FileManager.default
+        for archivedFileURL in archivedFileURLs {
+            do {
+                try fileManager.removeItem(at: archivedFileURL)
+            } catch let error as NSError {
+                JJLogger.error("CleanUpLogFiles log file error:\(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func archivedURLs() -> [URL] {
+        let archiveFolderURL: URL = (self.archiveFolderURL ?? type(of: self).defaultLogFolderURL)
+        guard let fileURLs = try? FileManager.default.contentsOfDirectory(at: archiveFolderURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]) else { return [] }
+        
+        
+        var archivedDetails: [(url: URL, timestamp: TimeInterval)] = []
+        for fileURL in fileURLs {
+            let attributes = try? FileManager.default.attributesOfItem(atPath: fileURL.absoluteString)
+            let date = attributes?[.creationDate] as? Date ?? Date()
+            archivedDetails.append((fileURL, date.timeIntervalSince1970))
+        }
+        
+        archivedDetails.sort(by: { (lhs, rhs) -> Bool in lhs.timestamp > rhs.timestamp })
+        var archivedFileURLs: [URL] = []
+        for archivedDetail in archivedDetails {
+            archivedFileURLs.append(archivedDetail.url)
+        }
+        
+        return archivedFileURLs
+    }
+    
+    
+    public func needNewFile() -> Bool {
+        // File Size
+        guard currentLogFileSize < targetMaxFileSize else { return true }
+
+        // Time Interval, zero = never rotate
+        guard targetMaxTimeInterval > 0 else { return false }
+
+        // Time Interval, else check time
+        guard Date().timeIntervalSince1970 - currentLogStartTimeInterval < targetMaxTimeInterval else { return true }
+
+        return false
+    }
 }
 
 extension JJFileOutput {
