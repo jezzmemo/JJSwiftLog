@@ -69,18 +69,28 @@ public class JJFileOutput: JJLogOutput {
     
     static var defaultLogFolderURL: URL {
         var defaultLogFolderURL: URL
-#if os(macOS)
-        defaultLogFolderURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("log")
-#elseif os(iOS) || os(tvOS) || os(watchOS)
-        let urls = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)
-        defaultLogFolderURL = urls[urls.endIndex - 1].appendingPathComponent("log")
+#if os(tvOS) || os(iOS) || os(watchOS)
+        defaultLogFolderURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+#elseif os(macOS)
+        guard let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
+            return nil
+        }
+        
+        guard let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleExecutable") as? String else {
+            return nil
+        }
+        
+        defaultLogFolderURL = url.appendingPathComponent(appName, isDirectory: true)
+        try? FileManager.default.createDirectory(at: appURL, withIntermediateDirectories: true, attributes: nil)
+        
+#elseif os(Linux)
+        defaultLogFolderURL = URL(fileURLWithPath: "/var/cache/")
 #endif
-        try? FileManager.default.createDirectory(at: defaultLogFolderURL, withIntermediateDirectories: true)
         return defaultLogFolderURL
     }
     
     /// File pointer
-    private let _filePointer: UnsafeMutablePointer<FILE>?
+    private var _filePointer: UnsafeMutablePointer<FILE>?
     
     /// File path, default path is cachesDirectory
     ///
@@ -114,33 +124,10 @@ public class JJFileOutput: JJLogOutput {
         if let filePath = filePath {
             logFilePath = filePath
         } else {
-            #if os(tvOS) || os(iOS) || os(watchOS)
-            guard let appURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-                return nil
-            }
-            
-            #elseif os(macOS)
-            guard let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-                return nil
-            }
-            
-            guard let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleExecutable") as? String else {
-                return nil
-            }
-            
-            let appURL = url.appendingPathComponent(appName, isDirectory: true)
-            try? FileManager.default.createDirectory(at: appURL, withIntermediateDirectories: true, attributes: nil)
-            
-            #elseif os(Linux)
-            let appURL = URL(fileURLWithPath: "/var/cache/")
-            #else
-            //TODO: Windows
-            #endif
-            let logFileURL = appURL.appendingPathComponent(baseFileName + "." + fileExtension, isDirectory: false)
-            logFilePath = logFileURL.relativePath
+            logFilePath = self.logFileURL.relativePath
         }
         
-        _filePointer = fopen(logFilePath!, "aw+")
+        self.createNewFile(filePath: logFilePath!)
         
         if _filePointer == nil {
             print("Create file pointer failed")
@@ -152,6 +139,8 @@ public class JJFileOutput: JJLogOutput {
                 var attributes = try FileManager.default.attributesOfItem(atPath: logFilePath ?? "")
                 attributes[FileAttributeKey.protectionKey] = FileProtectionType.none
                 try FileManager.default.setAttributes(attributes, ofItemAtPath: logFilePath ?? "")
+                currentLogFileSize = attributes[.size] as? UInt64 ?? 0
+                currentLogStartTimeInterval = (attributes[.creationDate] as? Date ?? Date()).timeIntervalSince1970
             } catch _ {
                 print("Set file protectionKey failed")
             }
@@ -170,13 +159,21 @@ public class JJFileOutput: JJLogOutput {
     /// - Parameter string: Log text
     private func write(string: String) {
         
+        currentLogFileSize += UInt64(string.count)
+        
         //Check file exist, if not exist will recreate
         if access(logFilePath, F_OK) == -1 {
             freopen(logFilePath, "w+", _filePointer)
         }
         
+        //Write string to file
         if _filePointer != nil {
             self.writeStringToFile(string, filePointer: _filePointer!)
+        }
+        
+        //Check need to create new file
+        if needNewFile() {
+            createNewFile()
         }
     }
     
@@ -184,10 +181,27 @@ public class JJFileOutput: JJLogOutput {
 
 extension JJFileOutput {
     
-    public func createNewFile() {
+    var logFileURL: URL {
         var archiveFolderURL: URL = (self.archiveFolderURL ?? JJFileOutput.defaultLogFolderURL)
         archiveFolderURL = archiveFolderURL.appendingPathComponent("\(baseFileName)\(archiveDateFormatter.string(from: Date()))")
         archiveFolderURL = archiveFolderURL.appendingPathExtension(fileExtension)
+        return archiveFolderURL
+    }
+    
+    public func createNewFile(filePath: String) {
+        if _filePointer != nil {
+            fflush(_filePointer)
+            fclose(_filePointer)
+            _filePointer = nil
+        }
+        _filePointer = fopen(filePath, "aw+")
+    }
+    
+    public func createNewFile() {
+      
+        let archiveFolderURL = self.logFileURL
+        
+        self.createNewFile(filePath: archiveFolderURL.relativePath)
 
         currentLogStartTimeInterval = Date().timeIntervalSince1970
         currentLogFileSize = 0
@@ -204,7 +218,7 @@ extension JJFileOutput {
         let fileManager: FileManager = FileManager.default
         for archivedFileURL in archivedFileURLs {
             do {
-                try fileManager.removeItem(at: archivedFileURL)
+                try fileManager.removeItem(atPath: archivedFileURL.path)
             } catch let error as NSError {
                 JJLogger.error("CleanUpLogFiles log file error:\(error.localizedDescription)")
             }
@@ -218,7 +232,7 @@ extension JJFileOutput {
         
         var archivedDetails: [(url: URL, timestamp: TimeInterval)] = []
         for fileURL in fileURLs {
-            let attributes = try? FileManager.default.attributesOfItem(atPath: fileURL.absoluteString)
+            let attributes = try? FileManager.default.attributesOfItem(atPath: fileURL.path)
             let date = attributes?[.creationDate] as? Date ?? Date()
             archivedDetails.append((fileURL, date.timeIntervalSince1970))
         }
@@ -234,15 +248,12 @@ extension JJFileOutput {
     
     
     public func needNewFile() -> Bool {
-        // File Size
+        
         guard currentLogFileSize < targetMaxFileSize else { return true }
-
-        // Time Interval, zero = never rotate
+        
         guard targetMaxTimeInterval > 0 else { return false }
-
-        // Time Interval, else check time
+        
         guard Date().timeIntervalSince1970 - currentLogStartTimeInterval < targetMaxTimeInterval else { return true }
-
         return false
     }
 }

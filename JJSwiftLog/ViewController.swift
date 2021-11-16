@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let file = JJFileOutput()
+    var file = JJFileOutput()
 
     func setupLog() {
 
@@ -24,6 +24,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         if file != nil {
+            file?.targetMaxFileSize = 1000
             JJLogger.addLogOutput(file!)
         }
         #if DEBUG
@@ -50,6 +51,21 @@ class ViewController: UIViewController {
         
         setupLog()
         setupVendor(parameter: "Show the error log")
+        JJLogger.verbose("Start the record")
+        JJLogger.debug("Debug the world")
+        JJLogger.info("Show log info")
+        JJLogger.warning("Build warning")
+        JJLogger.error("can’t fetch user info without user id")
+        
+        let button = UIButton(type: .custom)
+        button.setTitle("Add log", for: .normal)
+        button.addTarget(self, action: #selector(clickButton), for: .touchUpInside)
+        button.setTitleColor(.red, for: .normal)
+        button.frame = CGRect(x: 0, y: 200, width: 200, height: 50)
+        self.view.addSubview(button)
+    }
+    
+    @objc func clickButton() {
         JJLogger.verbose("Start the record")
         JJLogger.debug("Debug the world")
         JJLogger.info("Show log info")
