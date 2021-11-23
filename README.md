@@ -60,9 +60,11 @@ import JJSwiftLog
 ```swift
 override func viewDidLoad() {
      super.viewDidLoad()
-     if let file = JJFileOutput() {
-         JJLogger.addLogOutput(file)
-     }
+     var file = JJFileOutput()
+     file?.targetMaxFileSize = 1000 * 1024
+     file?.targetMaxTimeInterval = 600
+     file?.targetMaxLogFiles = 20
+     JJLogger.addLogOutput(file)
      #if DEBUG
      JJLogger.addLogOutput(JJConsoleOutput())
      #endif
@@ -77,6 +79,13 @@ override func viewDidLoad() {
      JJLogger.info(Date())
      JJLogger.warning(["1", "2"])
 }
+```
+
+* `JJConsoleOutput`可以使用 `NSLog`样式,使用`isUseNSLog`属性即可
+
+```swift
+var console = JJConsoleOutput()
+console.isUseNSLog = false
 ```
 
 * 使用`enable`，实时开关日志，默认是开启的
@@ -153,7 +162,7 @@ public struct CustomerOutput: JJLogOutput {
 
 ## TODO(记得给我星哦)
 
-* 加强文件处理
+* 内联使用
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)

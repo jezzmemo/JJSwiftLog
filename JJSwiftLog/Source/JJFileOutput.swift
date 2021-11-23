@@ -71,17 +71,11 @@ public class JJFileOutput: JJLogOutput {
         var defaultLogFolderURL: URL
 #if os(tvOS) || os(iOS) || os(watchOS)
         defaultLogFolderURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        defaultLogFolderURL = defaultLogFolderURL.appendingPathComponent("jjlogger")
+        try? FileManager.default.createDirectory(at: defaultLogFolderURL, withIntermediateDirectories: true)
 #elseif os(macOS)
-        guard let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-            return nil
-        }
-        
-        guard let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleExecutable") as? String else {
-            return nil
-        }
-        
-        defaultLogFolderURL = url.appendingPathComponent(appName, isDirectory: true)
-        try? FileManager.default.createDirectory(at: appURL, withIntermediateDirectories: true, attributes: nil)
+        defaultLogFolderURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("jjlogger")
+        try? FileManager.default.createDirectory(at: defaultLogFolderURL, withIntermediateDirectories: true, attributes: nil)
         
 #elseif os(Linux)
         defaultLogFolderURL = URL(fileURLWithPath: "/var/cache/")
@@ -127,7 +121,7 @@ public class JJFileOutput: JJLogOutput {
             logFilePath = self.logFileURL.relativePath
         }
         
-        self.createNewFile(filePath: logFilePath!)
+        self.createNewFilePointer(filePath: logFilePath!)
         
         if _filePointer == nil {
             print("Create file pointer failed")
@@ -181,6 +175,7 @@ public class JJFileOutput: JJLogOutput {
 
 extension JJFileOutput {
     
+    /// Log file url
     var logFileURL: URL {
         var archiveFolderURL: URL = (self.archiveFolderURL ?? JJFileOutput.defaultLogFolderURL)
         archiveFolderURL = archiveFolderURL.appendingPathComponent("\(baseFileName)\(archiveDateFormatter.string(from: Date()))")
@@ -188,20 +183,22 @@ extension JJFileOutput {
         return archiveFolderURL
     }
     
-    public func createNewFile(filePath: String) {
+    /// Create new file pointer
+    /// - Parameter filePath: filePath
+    public func createNewFilePointer(filePath: String) {
         if _filePointer != nil {
-            fflush(_filePointer)
             fclose(_filePointer)
             _filePointer = nil
         }
         _filePointer = fopen(filePath, "aw+")
     }
     
+    /// Create new file
     public func createNewFile() {
       
         let archiveFolderURL = self.logFileURL
         
-        self.createNewFile(filePath: archiveFolderURL.relativePath)
+        self.createNewFilePointer(filePath: archiveFolderURL.relativePath)
 
         currentLogStartTimeInterval = Date().timeIntervalSince1970
         currentLogFileSize = 0
@@ -209,6 +206,7 @@ extension JJFileOutput {
         clearLogFiles()
     }
     
+    /// Clear the greater the targetMaxLogFiles size
     func clearLogFiles() {
         var archivedFileURLs: [URL] = self.archivedURLs()
         guard archivedFileURLs.count > Int(targetMaxLogFiles) else { return }
@@ -218,13 +216,15 @@ extension JJFileOutput {
         let fileManager: FileManager = FileManager.default
         for archivedFileURL in archivedFileURLs {
             do {
-                try fileManager.removeItem(atPath: archivedFileURL.path)
+                try fileManager.removeItem(at: archivedFileURL)
             } catch let error as NSError {
                 JJLogger.error("CleanUpLogFiles log file error:\(error.localizedDescription)")
             }
         }
     }
     
+    /// Archived the log files URL
+    /// - Returns: [URL]
     func archivedURLs() -> [URL] {
         let archiveFolderURL: URL = (self.archiveFolderURL ?? type(of: self).defaultLogFolderURL)
         guard let fileURLs = try? FileManager.default.contentsOfDirectory(at: archiveFolderURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]) else { return [] }
@@ -247,6 +247,8 @@ extension JJFileOutput {
     }
     
     
+    /// Check the need to new file status
+    /// - Returns: Ture or False
     public func needNewFile() -> Bool {
         
         guard currentLogFileSize < targetMaxFileSize else { return true }

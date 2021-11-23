@@ -24,12 +24,14 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         if file != nil {
-            file?.targetMaxFileSize = 1000
+            file?.targetMaxFileSize = 1000 * 1024
+            file?.targetMaxTimeInterval = 600
+            file?.targetMaxLogFiles = 20
             JJLogger.addLogOutput(file!)
         }
         #if DEBUG
         var console = JJConsoleOutput()
-        console.isUseNSLog = true
+        console.isUseNSLog = false
         JJLogger.addLogOutput(console)
         #endif
 
