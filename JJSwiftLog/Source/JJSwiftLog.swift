@@ -18,7 +18,7 @@ public let JJLogger = JJSwiftLog.self
 public struct JJSwiftLog {
     
     /// Log level
-    public enum Level: Int {
+    public enum Level: Int, CaseIterable {
         case verbose = 0
         case debug = 1
         case info = 2
@@ -91,30 +91,35 @@ public struct JJSwiftLog {
     
     /// Verbose
     /// - Parameter message: message
+    @inlinable
     public static func verbose(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .verbose, message: message(), file: file, function: function, line: line)
     }
     
     /// Debug
     /// - Parameter message: message
+    @inlinable
     public static func debug(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .debug, message: message(), file: file, function: function, line: line)
     }
     
     /// Info
     /// - Parameter message: message
+    @inlinable
     public static func info(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .info, message: message(), file: file, function: function, line: line)
     }
     
     /// Warn
-     /// - Parameter message: message
+    /// - Parameter message: message
+    @inlinable
     public static func warning(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .warning, message: message(), file: file, function: function, line: line)
     }
     
     /// Error
-     /// - Parameter message: message
+    /// - Parameter message: message
+    @inlinable
     public static func error(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .error, message: message(), file: file, function: function, line: line)
     }
