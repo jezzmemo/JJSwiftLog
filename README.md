@@ -97,10 +97,10 @@ console.isUseNSLog = false
     * `targetMaxFileSize`文件最大个数，如果超出这个数，就会删除之前的文件
 
 ```swift
-     var file = JJFileOutput()
-     file?.targetMaxFileSize = 1000 * 1024
-     file?.targetMaxTimeInterval = 600
-     file?.targetMaxLogFiles = 20
+var file = JJFileOutput()
+file?.targetMaxFileSize = 1000 * 1024
+file?.targetMaxTimeInterval = 600
+file?.targetMaxLogFiles = 20
 ```
 
 * 使用`enable`，实时开关日志，默认是开启的
