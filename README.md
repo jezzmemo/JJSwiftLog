@@ -88,6 +88,19 @@ var console = JJConsoleOutput()
 console.isUseNSLog = false
 ```
 
+* `JJFileOutput`有几个属性可以调整存储文件策略
+
+    * `targetMaxFileSize`文件最大体积
+
+    * `targetMaxTimeInterval`生成新文件间隔
+
+    * `targetMaxFileSize`文件最大个数，如果超出这个数，就会删除之前的文件
+
+```swift
+var console = JJConsoleOutput()
+console.isUseNSLog = false
+```
+
 * 使用`enable`，实时开关日志，默认是开启的
 
 ```swift
@@ -152,7 +165,7 @@ public struct CustomerOutput: JJLogOutput {
         }
     }
     
-    /// 获取日志方法
+    /// 获取日志方法，本地或者网络都可以
     public func log(_ level: JJSwiftLog.Level, msg: String, thread: String,
      file: String, function: String, line: Int) {
     }
