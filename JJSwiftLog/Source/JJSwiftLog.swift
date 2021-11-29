@@ -152,8 +152,11 @@ public struct JJSwiftLog {
             if output.logLevel.rawValue > level.rawValue {
                 continue
             }
-            
-            outputQueue.async {
+            if let outputQueue = output.queue {
+                outputQueue.async {
+                    output.log(level, msg: resultMessage, thread: threadName, file: file, function: function, line: line)
+                }
+            } else {
                 output.log(level, msg: resultMessage, thread: threadName, file: file, function: function, line: line)
             }
         }

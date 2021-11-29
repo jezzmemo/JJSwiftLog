@@ -56,7 +56,10 @@ internal struct JJLogOutputConfig {
 
 public protocol JJLogOutput {
     
-    /// queue
+    /// queue, customer's DispatchQueue
+    ///
+    /// If queue != nil , will process async queue
+    /// If queue == nil , will process current queue
     var queue: DispatchQueue? {
         get
     }
