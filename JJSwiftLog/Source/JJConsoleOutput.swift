@@ -8,13 +8,24 @@
 
 import Foundation
 
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+import Darwin
+#elseif os(Windows)
+import CRT
+#elseif canImport(Glibc)
+import Glibc
+#else
+#error("Unsupported runtime")
+#endif
+
 /// Console log
 ///
 /// Implement UNIX's `stdout`
 public struct JJConsoleOutput: JJLogOutput {
     
     /// File pointer
-    private let _filePointer: UnsafeMutablePointer<FILE>?
+    private let _stdoutFilePointer: UnsafeMutablePointer<FILE>?
+    private let _stderrFilePointer: UnsafeMutablePointer<FILE>?
     
     /// Console queue
     private var _consoleQueue: DispatchQueue?
@@ -43,11 +54,16 @@ public struct JJConsoleOutput: JJLogOutput {
     public init() {
         _consoleQueue = DispatchQueue(label: "JJConsoleOutput", target: _consoleQueue)
         #if os(macOS) || os(tvOS) || os(iOS) || os(watchOS)
-        _filePointer = Darwin.stdout
+        _stdoutFilePointer = Darwin.stdout
+        _stderrFilePointer = Darwin.stderr
         #elseif os(Windows)
-        _filePointer = MSVCRT.stdout
+        _stdoutFilePointer = CRT.stdout
+        _stderrFilePointer = CRT.stderr
+        #elseif canImport(Glibc)
+        _stdoutFilePointer = Glibc.stdout
+        _stderrFilePointer = Glibc.stderr
         #else
-        _filePointer = Glibc.stdout
+        #error("Unsupported runtime")
         #endif
     }
     
@@ -56,13 +72,21 @@ public struct JJConsoleOutput: JJLogOutput {
         if isUseNSLog {
             NSLog("%@", message)
         } else {
-            self.writeMessageToConsole(message)
+            self.writeMessageToConsole(message, isError: level == .error ? true : false)
         }
     }
     
-    private func writeMessageToConsole(_ message: String) {
-        if self._filePointer != nil {
-            self.writeStringToFile(message, filePointer: self._filePointer!)
+    /// Write message to the std I/O
+    /// - Parameters:
+    ///   - message: string log
+    ///   - isError: is error level
+    private func writeMessageToConsole(_ message: String, isError: Bool) {
+        if isError && self._stderrFilePointer != nil {
+            self.writeStringToFile(message, filePointer: self._stderrFilePointer!)
+            return
+        }
+        if self._stdoutFilePointer != nil {
+            self.writeStringToFile(message, filePointer: self._stdoutFilePointer!)
         }
     }
     
