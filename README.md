@@ -177,7 +177,8 @@ public struct CustomerOutput: JJLogOutput {
 
 ## TODO(记得给我星哦)
 
-* 内联使用
+* 线程信息的展示
+* 组件的启动信息
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)
