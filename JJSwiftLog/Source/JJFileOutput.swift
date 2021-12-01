@@ -53,7 +53,7 @@ public class JJFileOutput: JJLogOutput {
     }
 
     /// Option: the URL of the folder to store archived log files (defaults to the same folder as the initial log file)
-    public var archiveFolderURL: URL? = nil {
+    public var archiveFolderURL: URL? {
         didSet {
             guard let archiveFolderURL = archiveFolderURL else { return }
             try? FileManager.default.createDirectory(at: archiveFolderURL, withIntermediateDirectories: true)
@@ -155,17 +155,17 @@ public class JJFileOutput: JJLogOutput {
         
         currentLogFileSize += UInt64(string.count)
         
-        //Check file exist, if not exist will recreate
+        // Check file exist, if not exist will recreate
         if access(logFilePath, F_OK) == -1 {
             freopen(logFilePath, "w+", _filePointer)
         }
         
-        //Write string to file
+        // Write string to file
         if _filePointer != nil {
             self.writeStringToFile(string, filePointer: _filePointer!)
         }
         
-        //Check need to create new file
+        // Check need to create new file
         if needNewFile() {
             createNewFile()
         }
@@ -227,8 +227,7 @@ extension JJFileOutput {
     /// - Returns: [URL]
     func archivedURLs() -> [URL] {
         let archiveFolderURL: URL = (self.archiveFolderURL ?? type(of: self).defaultLogFolderURL)
-        guard let fileURLs = try? FileManager.default.contentsOfDirectory(at: archiveFolderURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]) else { return [] }
-        
+        guard let fileURLs = try? FileManager.default.contentsOfDirectory(at: archiveFolderURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]) else { return [] }     
         
         var archivedDetails: [(url: URL, timestamp: TimeInterval)] = []
         for fileURL in fileURLs {
@@ -245,8 +244,7 @@ extension JJFileOutput {
         
         return archivedFileURLs
     }
-    
-    
+     
     /// Check the need to new file status
     /// - Returns: Ture or False
     public func needNewFile() -> Bool {
@@ -261,7 +259,6 @@ extension JJFileOutput {
 }
 
 extension JJFileOutput {
-
 
     /// Delete log file
     /// - Returns: true delete success, false delete failed

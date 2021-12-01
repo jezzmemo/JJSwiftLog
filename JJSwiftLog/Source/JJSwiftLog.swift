@@ -146,9 +146,6 @@ public struct JJSwiftLog {
         let resultMessage = "\(message)"
         
         for output in outputs {
-            guard let outputQueue = output.queue else {
-                continue
-            }
             if output.logLevel.rawValue > level.rawValue {
                 continue
             }
