@@ -63,9 +63,15 @@ extension JJLogOutput {
         text += self.formatDate(JJLogOutputConfig.dateTimezoneformatter) + JJLogOutputConfig.padding
         text += level.emojiLevel + JJLogOutputConfig.padding
         text += thread.isEmpty ? "" : (thread + JJLogOutputConfig.padding)
-        text += JJLogOutputConfig.fileNameWithoutSuffix(file)  + JJLogOutputConfig.point
-        text += function + JJLogOutputConfig.padding
-        text += "\(line)" + JJLogOutputConfig.padding
+        if !file.isEmpty {
+            text += JJLogOutputConfig.fileNameWithoutSuffix(file)  + JJLogOutputConfig.point
+        }
+        if !function.isEmpty {
+            text += function + JJLogOutputConfig.padding
+        }
+        if line != 0 {
+            text += "\(line)" + JJLogOutputConfig.padding
+        }
         text += level.stringLevel + JJLogOutputConfig.padding
         text += msg
         text += JJLogOutputConfig.newline

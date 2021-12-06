@@ -9,13 +9,20 @@
 import Foundation
 
 /// New JJSwiftLog short name
-public let JJLogger = JJSwiftLog.self
+public let JJLogger = JJSwiftLog.default
 
 /// JJSwiftLog main
 ///
 /// JJSwiftLog(Console,File,Network)，Support customer process the log
-
-public struct JJSwiftLog {
+open class JJSwiftLog {
+    
+    /// Constants variable
+    public struct Constants {
+        /// lib version number
+        public static let version = "0.0.11"
+    }
+    
+    var outputLevel: Level = .debug
     
     /// Log level
     public enum Level: Int, CaseIterable {
@@ -28,19 +35,19 @@ public struct JJSwiftLog {
     
     // MARK: - Property
     
-    private static var outputs = [JJLogOutput]()
+    private var outputs = [JJLogOutput]()
     
-    private static let semaphore = DispatchSemaphore(value: 1)
+    private let semaphore = DispatchSemaphore(value: 1)
     
-    private static var onlyShowLogFileName: String?
+    private var onlyShowLogFileName: String?
     
     // MARK: - Public
     
     /// Default enable log
-    public static var enable = true
+    public var enable = true
     
     /// Customer log format, default is nil
-    public static var format: String? {
+    public var format: String? {
         didSet {
             if self.format != nil {
                 JJLogFormatter.shared.formatLog(format!)
@@ -50,10 +57,31 @@ public struct JJSwiftLog {
     
     /// Simple log format
     public static let simpleFormat = "%D -> %F:%l - %f %M"
+    
+    /// Default instance, developer can alloc it by myself
+    public static let `default` = JJSwiftLog()
+    
+    /// Simple setup,quick tourist
+    /// - Parameter level: JJSwiftLog.Level, default is debug level
+    public func setup(level: JJSwiftLog.Level = .debug) {
+        outputLevel = level
+        
+        var console = JJConsoleOutput()
+        console.isUseNSLog = false
+        console.logLevel = level
+        self.addLogOutput(console)
+        
+        if let file = JJFileOutput() {
+            file.logLevel = level
+            self.addLogOutput(file)
+        }
+        
+        self.startupLogInfo()
+    }
 
     /// Add customer process log
     /// - Parameter output: JJLogOutput
-    public static func addLogOutput(_ output: JJLogOutput) {
+    public func addLogOutput(_ output: JJLogOutput) {
         semaphore.wait()
         defer {
             semaphore.signal()
@@ -68,7 +96,7 @@ public struct JJSwiftLog {
     
     /// Remove customer JJLogOutput
     /// - Parameter output: JJLogOutput
-    public static func removeLogOutput(_ output: JJLogOutput) {
+    public func removeLogOutput(_ output: JJLogOutput) {
         semaphore.wait()
         defer {
             semaphore.signal()
@@ -83,7 +111,7 @@ public struct JJSwiftLog {
     
     /// Process only show log file
     /// - Parameter filename: File name without suffix
-    public static func onlyLogFile(_ filename: String) {
+    public func onlyLogFile(_ filename: String) {
         onlyShowLogFileName = filename
     }
     
@@ -92,35 +120,35 @@ public struct JJSwiftLog {
     /// Verbose
     /// - Parameter message: message
     @inlinable
-    public static func verbose(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
+    public func verbose(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .verbose, message: message(), file: file, function: function, line: line)
     }
     
     /// Debug
     /// - Parameter message: message
     @inlinable
-    public static func debug(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
+    public func debug(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .debug, message: message(), file: file, function: function, line: line)
     }
     
     /// Info
     /// - Parameter message: message
     @inlinable
-    public static func info(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
+    public func info(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .info, message: message(), file: file, function: function, line: line)
     }
     
     /// Warn
     /// - Parameter message: message
     @inlinable
-    public static func warning(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
+    public func warning(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .warning, message: message(), file: file, function: function, line: line)
     }
     
     /// Error
     /// - Parameter message: message
     @inlinable
-    public static func error(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
+    public func error(_ message: @autoclosure() -> Any, file: String = #file, function: String = #function, line: Int = #line) {
         custom(level: .error, message: message(), file: file, function: function, line: line)
     }
     
@@ -130,8 +158,7 @@ public struct JJSwiftLog {
     /// - Parameter file: file
     /// - Parameter function: function
     /// - Parameter line: line
-    public static func custom(level: JJSwiftLog.Level, message: Any,
-                              file: String = #file, function: String = #function, line: Int = #line) {
+    public func custom(level: JJSwiftLog.Level, message: Any, file: String = #file, function: String = #function, line: Int = #line) {
 
         /// Filter onlyShowLogFileName
         if let fileName = onlyShowLogFileName, JJLogOutputConfig.fileNameWithoutSuffix(file) != fileName {
@@ -162,15 +189,43 @@ public struct JJSwiftLog {
 
 extension JJSwiftLog {
     
-    static func threadName() -> String {
-        if Thread.isMainThread {
-            return ""
+    func threadName() -> String {
+        guard !Thread.isMainThread else {
+            return "main"
+        }
+        
+        let threadName = Thread.current.name
+        if let threadName = threadName, !threadName.isEmpty {
+            return threadName
+        } else if let queueName = String(validatingUTF8: __dispatch_queue_get_label(nil)), !queueName.isEmpty {
+            return queueName
         } else {
-            let threadName = Thread.current.name
-            if let threadName = threadName, !threadName.isEmpty {
-                return threadName
-            } else {
-                return String(format: "%p", Thread.current)
+            return String(format: "%p", Thread.current)
+        }
+    }
+    
+    func startupLogInfo() {
+
+        var buildString = "\(ProcessInfo.processInfo.processName) "
+        if let infoDictionary = Bundle.main.infoDictionary {
+            if let CFBundleShortVersionString = infoDictionary["CFBundleShortVersionString"] as? String {
+                buildString += "Version: \(CFBundleShortVersionString) "
+            }
+            if let CFBundleVersion = infoDictionary["CFBundleVersion"] as? String {
+                buildString += "Build: \(CFBundleVersion) "
+            }
+        }
+        
+        let libVersion = JJSwiftLog.Constants.version
+        var logs = [String]()
+        let appInfo = ">>> \(buildString)PID: \(ProcessInfo.processInfo.processIdentifier)"
+        let libInfo = ">>> JJSwiftLog Version: \(libVersion) - Log Level: \(outputLevel)"
+        logs.append(appInfo)
+        logs.append(libInfo)
+        
+        logs.forEach { message in
+            outputs.forEach { log in
+                log.log(.info, msg: message, thread: "", file: "", function: "", line: 0)
             }
         }
     }

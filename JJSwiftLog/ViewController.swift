@@ -9,8 +9,8 @@
 import UIKit
 
 class ViewController: UIViewController {
-
-    var file = JJFileOutput()
+    
+    let file = JJFileOutput()
 
     func setupLog() {
 
@@ -22,18 +22,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if file != nil {
-            file?.targetMaxFileSize = 1000 * 1024
-            file?.targetMaxTimeInterval = 600
-            file?.targetMaxLogFiles = 20
-            JJLogger.addLogOutput(file!)
-        }
-        #if DEBUG
-        var console = JJConsoleOutput()
-        console.isUseNSLog = false
-        JJLogger.addLogOutput(console)
-        #endif
+        JJLogger.setup(level: .verbose)
 
         JJLogger.format = JJSwiftLog.simpleFormat
         JJLogger.onlyLogFile("ViewController")
@@ -65,6 +54,20 @@ class ViewController: UIViewController {
         button.setTitleColor(.red, for: .normal)
         button.frame = CGRect(x: 0, y: 200, width: 200, height: 50)
         self.view.addSubview(button)
+    }
+    
+    func advanceUsage() {
+        if file != nil {
+            file?.targetMaxFileSize = 1000 * 1024
+            file?.targetMaxTimeInterval = 600
+            file?.targetMaxLogFiles = 20
+            JJLogger.addLogOutput(file!)
+        }
+        #if DEBUG
+        var console = JJConsoleOutput()
+        console.isUseNSLog = false
+        JJLogger.addLogOutput(console)
+        #endif
     }
     
     @objc func clickButton() {
