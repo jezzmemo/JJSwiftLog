@@ -19,10 +19,10 @@ open class JJSwiftLog {
     /// Constants variable
     public struct Constants {
         /// lib version number
-        public static let version = "0.0.11"
+        public static let version = "0.0.12"
     }
     
-    var outputLevel: Level = .debug
+    var logLevel: Level = .debug
     
     /// Log level
     public enum Level: Int, CaseIterable {
@@ -62,9 +62,11 @@ open class JJSwiftLog {
     public static let `default` = JJSwiftLog()
     
     /// Simple setup,quick tourist
-    /// - Parameter level: JJSwiftLog.Level, default is debug level
-    public func setup(level: JJSwiftLog.Level = .debug) {
-        outputLevel = level
+    /// - Parameters:
+    ///   - level: JJSwiftLog.Level, default is debug level
+    ///   - fileLevel: JJSwiftLog.Level option type
+    open func setup(level: JJSwiftLog.Level = .debug, fileLevel: JJSwiftLog.Level? = nil) {
+        logLevel = level
         
         var console = JJConsoleOutput()
         console.isUseNSLog = false
@@ -72,11 +74,11 @@ open class JJSwiftLog {
         self.addLogOutput(console)
         
         if let file = JJFileOutput() {
-            file.logLevel = level
+            file.logLevel = fileLevel ?? level
             self.addLogOutput(file)
         }
         
-        self.startupLogInfo()
+        self.startLogInfo()
     }
 
     /// Add customer process log
@@ -204,7 +206,8 @@ extension JJSwiftLog {
         }
     }
     
-    func startupLogInfo() {
+    /// If add JJLogOutput by manual, developer recommend to call this method
+    open func startLogInfo() {
 
         var buildString = "\(ProcessInfo.processInfo.processName) "
         if let infoDictionary = Bundle.main.infoDictionary {
@@ -219,7 +222,7 @@ extension JJSwiftLog {
         let libVersion = JJSwiftLog.Constants.version
         var logs = [String]()
         let appInfo = ">>> \(buildString)PID: \(ProcessInfo.processInfo.processIdentifier)"
-        let libInfo = ">>> JJSwiftLog Version: \(libVersion) - Log Level: \(outputLevel)"
+        let libInfo = ">>> JJSwiftLog Version: \(libVersion) - Log Level: \(logLevel)"
         logs.append(appInfo)
         logs.append(libInfo)
         

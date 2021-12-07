@@ -5,15 +5,15 @@
 
 # JJSwiftLog
 
-![JJSwiftLog screenshot](https://raw.githubusercontent.com/jezzmemo/JJSwiftLog/master/screenshots/main.jpg)
+![JJSwiftLog screenshot](https://raw.githubusercontent.com/jezzmemo/JJSwiftLog/master/screenshots/main.png)
 
-使用Unix file descriptor的stdout原理，将日志模块的日志输出到stdout,然后将日志抽象成接口，内置控制台和文件日志，由开发者自行添加，自定义日志可以满足自行分发到任意渠道.
+延续了Swift的日志的简洁，也兼顾了日志的功能，文件名，函数名，行数等信息，内置了控制台和文件日志功能,满足开发者的基本需求，自定义日志予以开发者高度灵活的空间
 
 ## 主要功能
 
-- [x] 控制台展示(Console Log)
+- [x] 控制台展示(Console Log)，兼顾`NSLog`的特性
 
-- [x] 日志文件存储(File Log)
+- [x] 日志文件存储(File Log)，配置文件日志的高级属性
 
 - [x] 用户自定义日志,实现`JJLogOutput`协议即可
 
@@ -21,7 +21,9 @@
 
 - [x] 只显示指定文件日志
 
-- [x] 自定义日志格式, 内置样式供开发者选择
+- [x] 自定义日志格式，任意组合, 内置样式供开发者选择
+
+- [x] 支持多平台iOS,MaxOS,Windows和Linux
 
 ## 如何安装
 
@@ -49,13 +51,35 @@ __Swift Package Manager__
 
 ## 如何使用
 
+### 快速使用
+
 * 导入模块
 
 ```
 import JJSwiftLog
 ```
 
-* 使用示例
+* 快速入门
+
+一般推荐在程序的入口处，进行初始化，默认配置了控制台和文件日志，只需要配置日志级别即可，以下是示例:
+
+```swift
+override func viewDidLoad() {
+    super.viewDidLoad()
+    JJLogger.setup(level: .verbose)
+
+    JJLogger.verbose("verbose")
+    JJLogger.debug("debug")
+    JJLogger.info("info")
+    JJLogger.warning("warn")
+    JJLogger.error("error")
+}
+``` 
+
+
+### 高级使用
+
+* 开发者自己配置日志
 
 ```swift
 override func viewDidLoad() {
@@ -68,6 +92,7 @@ override func viewDidLoad() {
      #if DEBUG
      JJLogger.addLogOutput(JJConsoleOutput())
      #endif
+     JJLogger.startLogInfo()
      JJLogger.verbose("verbose")
      JJLogger.debug("debug")   
      JJLogger.info("info")
@@ -177,8 +202,8 @@ public struct CustomerOutput: JJLogOutput {
 
 ## TODO(记得给我星哦)
 
-* 线程信息的展示
-* 组件的启动信息
+* 多项Setup配置
+* 丰富日志格式
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)

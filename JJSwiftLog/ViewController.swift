@@ -68,6 +68,7 @@ class ViewController: UIViewController {
         console.isUseNSLog = false
         JJLogger.addLogOutput(console)
         #endif
+        JJLogger.startLogInfo()
     }
     
     @objc func clickButton() {
