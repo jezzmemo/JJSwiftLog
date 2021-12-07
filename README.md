@@ -7,7 +7,7 @@
 
 ![JJSwiftLog screenshot](https://raw.githubusercontent.com/jezzmemo/JJSwiftLog/master/screenshots/main.png)
 
-延续了Swift的日志的简洁，也兼顾了日志的功能，文件名，函数名，行数等信息，内置了控制台和文件日志功能,满足开发者的基本需求，自定义日志予以开发者高度灵活的空间
+延续了Swift日志的简洁，也兼顾了日志的基本功能，文件名，函数名，行数等信息，内置了控制台和文件日志功能,满足开发者的基本需求，自定义日志予以开发者高度灵活的空间
 
 ## 主要功能
 
@@ -23,7 +23,7 @@
 
 - [x] 自定义日志格式，任意组合, 内置样式供开发者选择
 
-- [x] 支持多平台iOS,MaxOS,Windows和Linux
+- [x] 支持多平台iOS,MacOS,Windows和Linux
 
 ## 如何安装
 
