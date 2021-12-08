@@ -1,4 +1,4 @@
-![Swift4.0+](https://img.shields.io/badge/Swift-4.0%2B-orange.svg?style=flat)
+![Swift4.0+](https://img.shields.io/badge/Swift-4.0%2B-blue.svg?style=flat)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/JJSwiftLog.svg)](https://img.shields.io/cocoapods/v/JJSwiftLog.svg)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Platform](https://img.shields.io/cocoapods/p/JJSwiftLog.svg?style=flat)](http://cocoadocs.org/docsets/JJSwiftLog)
