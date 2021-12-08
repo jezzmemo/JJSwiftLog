@@ -151,7 +151,7 @@ JJLogger.onlyLogFile("ViewController")
 | %F | 文件名，不带后缀 |
 | %f | 函数名 |
 | %D | 日期(目前仅支持yyyy-MM-dd HH:mm:ss.SSSZ) |
-| %T | 线程，如果主线程不显示，子线程显示地址 |
+| %T | 线程，如果主线程显示main，子线程显示地址或者QueueLabel |
 | %t | 显示HH:mm:ss格式 |
 | %d | 显示yyyy-MM-dd格式 |
 | %N | 文件名，带后缀 |
