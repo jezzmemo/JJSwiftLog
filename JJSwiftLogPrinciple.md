@@ -1,6 +1,6 @@
-# JJSwfitLog设计文档
+# JJSwiftLog设计文档
 
-JJSwfitLog的日志类型，是非用户行为和埋点日志库，因为这两种日志有自己特定的业务领域特性，所以我在给JJSwfitLog是这么定位的
+JJSwiftLog的日志类型，是非用户行为和埋点日志库，因为这两种日志有自己特定的业务领域特性，所以我在给JJSwiftLog是这么定位的
 
 在开发这个库的时候，我们要给它设定一个目标，这个日志库给我们解决什么问题，为什么需要一个日志库来辅助我们开发，以及日志库的价值是什么，我总结的以下几个点:
 
@@ -24,7 +24,7 @@ JJSwfitLog的日志类型，是非用户行为和埋点日志库，因为这两�
 
 日志应该是最基础的库之一，应该是最底层的库，供底层和业务服务，从层次来说应该再最下面，当然如果有些库想不依赖的特殊情况除外，因为下面会提到安全和网络这块，我的理解是这块可能需要我们通过冗余的设计来解决依赖的问题，来保证日志库的内聚，尽量减少外部耦合，让接入者感受到轻量，但是在使用时功能恰到好处，这就是我对日志库设计原则
 
-![JJSwfitLog architecture](https://raw.githubusercontent.com/jezzmemo/JJSwiftLog/master/screenshots/architecture.png)
+![JJSwiftLog architecture](https://raw.githubusercontent.com/jezzmemo/JJSwiftLog/master/screenshots/architecture.png)
 
 ## 日志性能
 
@@ -72,7 +72,5 @@ iOS 10以后才提供的，提供多种日志级别，需要import os，device c
 # 参考
 
 [https://github.com/DaveWoodCom/XCGLogger](https://github.com/DaveWoodCom/XCGLogger)
-
 [SwiftyBeaver](https://github.com/SwiftyBeaver/SwiftyBeaver)
-
 [https://github.com/emaloney/CleanroomLogger](https://github.com/emaloney/CleanroomLogger)
