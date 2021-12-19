@@ -55,13 +55,15 @@ iOS 10以后才提供的，提供多种日志级别，需要import os，device c
 
 ## 日志安全性
 
-`安全是相对的，没有绝对的`，本次持久化和网络存储都需要注意数据安全问题，常规的应对方法是：
+> 安全是相对的，没有绝对的
+
+本次持久化和网络存储都需要注意数据安全问题，常规的应对方法是：
 
 * 对称加密（DES、3DES、DESX、Blowfish、IDEA、RC4、RC5、RC6、AES。 DES. DES）
 
 * 非对称加密（RSA、Elgamal、背包算法、Rabin、D-H、ECC)
 
-通过以上的手段，当日志回传到server时，都需要将信息通过Key来恢复，每个公司对这个重视程度不一样，所以这部分根据自己实际情况来实现，不过强烈建议还是需要加密下，来保证数据的安全
+通过以上的手段，当日志在存储和传输时，都需要将信息通过Key来恢复，每个公司对这个重视程度不一样，所以这部分根据自己实际情况来实现，不过强烈建议还是需要加密下，来保证数据的安全
 
 ## 日志分片（扩展）
 
@@ -70,6 +72,7 @@ iOS 10以后才提供的，提供多种日志级别，需要import os，device c
 # 参考
 
 [https://github.com/DaveWoodCom/XCGLogger](https://github.com/DaveWoodCom/XCGLogger)
+
 [SwiftyBeaver](https://github.com/SwiftyBeaver/SwiftyBeaver)
+
 [https://github.com/emaloney/CleanroomLogger](https://github.com/emaloney/CleanroomLogger)
-[https://github.com/DaveWoodCom/XCGLogger](https://github.com/DaveWoodCom/XCGLogger)
