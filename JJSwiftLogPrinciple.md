@@ -18,11 +18,24 @@ JJSwiftLog的日志类型，是非用户行为和埋点日志库，因为这两�
 
 # 问题
 
-日志库需要注意的问题，I/O和CPU的占有率问题，尽可能的减少对系统的影响，让接入方对这点没有顾虑，性能问题，作为日志库不希望影响整体app的流畅度，能快速处理所有情况，这个是对日志库的基本要求，还有一个就是稳定性，这也是日志库的基本要求，安全性，本地存储或者网络存储需要注意的问题，来保证信息不被泄露和篡改
+日志库需要注意的问题:
+
+* I/O和CPU的占有率问题，尽可能的减少对系统的影响，让接入方对这点没有顾虑
+
+* 性能问题，作为日志库不希望影响整体app的流畅度，能快速处理所有情况，这个是对日志库的基本要求
+
+* 稳定性，这也是日志库的基本要求
+
+* 安全性，本地存储或者网络存储需要注意的问题，来保证信息不被泄露和篡改
 
 ## 架构位置和冗余设计
 
-日志应该是最基础的库之一，应该是最底层的库，供底层和业务服务，从层次来说应该再最下面，当然如果有些库想不依赖的特殊情况除外，因为下面会提到安全和网络这块，我的理解是这块可能需要我们通过冗余的设计来解决依赖的问题，来保证日志库的内聚，尽量减少外部耦合，让接入者感受到轻量，但是在使用时功能恰到好处，这就是我对日志库设计原则
+日志应该是最基础的库之一，应该是最底层的库，供底层和业务服务，从层次来说应该再最下面，当然如果有些库想不依赖的特殊情况除外，因为下面会提到安全和网络这块，我的理解是这块可能需要我们通过冗余的设计来解决依赖的问题，来保证日志库的内聚，尽量减少外部耦合，让接入者感受到轻量，但是在使用时功能恰到好处，这就是我对日志库设计原则。
+
+架构图的几个细节请注意：
+
+1. 带有虚线的Domain Log（领域Log/特定功能Log）,这个是根据实际情况来决定，非必须的
+2. 最下面标出Platform是给日志预留了可能需要跨平台的可能，还可以进一步提高性能
 
 ![JJSwiftLog architecture](https://raw.githubusercontent.com/jezzmemo/JJSwiftLog/master/screenshots/architecture.png)
 
@@ -42,7 +55,7 @@ iOS 10以后才提供的，提供多种日志级别，需要import os，device c
 
 * stdin,stdout,stderr
 
-根据UNIX的一切皆为文件的特性，任何进程都有一个输入，两个输出
+根据UNIX的一切皆为文件的特性，任何进程都有一个输入，stdout和stderr两个输出
 
 ## 日志稳定性
 
@@ -72,5 +85,9 @@ iOS 10以后才提供的，提供多种日志级别，需要import os，device c
 # 参考
 
 [https://github.com/DaveWoodCom/XCGLogger](https://github.com/DaveWoodCom/XCGLogger)
+
 [SwiftyBeaver](https://github.com/SwiftyBeaver/SwiftyBeaver)
+
 [https://github.com/emaloney/CleanroomLogger](https://github.com/emaloney/CleanroomLogger)
+
+[Swift print](https://github.com/sukeyang/blog-2/blob/master/articles/swift-print.md)
