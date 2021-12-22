@@ -32,7 +32,7 @@ JJSwiftLog的日志类型，是非用户行为和埋点日志库，因为这两�
 
 日志应该是最基础的库之一，应该是最底层的库，供底层和业务服务，从层次来说应该再最下面，当然如果有些库想不依赖的特殊情况除外，因为下面会提到安全和网络这块，我的理解是这块可能需要我们通过冗余的设计来解决依赖的问题，来保证日志库的内聚，尽量减少外部耦合，让接入者感受到轻量，但是在使用时功能恰到好处，这就是我对日志库设计原则。
 
-架构图的几个细节请注意：
+__架构图的几个细节请注意：__
 
 1. 带有虚线的Domain Log（领域Log/特定功能Log）,这个是根据实际情况来决定，非必须的
 2. 最下面标出Platform是给日志预留了可能需要跨平台的可能，还可以进一步提高性能
@@ -49,13 +49,30 @@ ASL, 通过client connection发送日志，device console AND the debugger conso
 
 iOS 10以后才提供的，提供多种日志级别，需要import os，device console AND the debugger console
 
-* print
+* Swift的print
 
-只会显示在debug console
+只会显示在debug console，其原理还是通过包装的API，最终调用putchar来展示到终端的
 
-* stdin,stdout,stderr
+* stdout, stderr
 
-根据UNIX的一切皆为文件的特性，任何进程都有一个输入，stdout和stderr两个输出
+根据UNIX的一切皆为文件的特性，任何进程都有一个输入，stdout和stderr两个输出, 可根据日志级别对应输出，一般用于Console
+
+* TTY
+
+可以将日志输出到终端设备上，暂时不考虑
+
+
+目前来说，主要是完成Console和File功能，在考虑性能的时候，一个要了解每个选型背后的原理，这样你才能准确评估它的空间有多大，我在评估的时候考虑因素：
+
+1. 技术选型实现原理
+2. 技术选型所在的层次
+3. 兼容和历史问题
+
+### Console（控制台）
+
+最终是选了stdout, stderr来实现输出到终端，本身stdout是和application绑定的，而且系统层次较低，通过UNIX的C函数来实现，而且本身带有Buffer功能，所以最终选用它来展示到终端
+
+### File（文件）
 
 ## 日志稳定性
 
