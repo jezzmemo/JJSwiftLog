@@ -61,6 +61,17 @@ open class JJSwiftLog {
     /// Default instance, developer can alloc it by myself
     public static let `default` = JJSwiftLog()
     
+    /// Init JJSwiftLog
+    /// - Parameter needDefaultOutput: Default output to show lib message log
+    public init(needDefaultOutput: Bool = true) {
+        if needDefaultOutput {
+            var console = JJConsoleOutput()
+            console.isUseNSLog = false
+            console.logLevel = .debug
+            self.addLogOutput(console)
+        }
+    }
+    
     /// Simple setup,quick tourist
     /// - Parameters:
     ///   - level: JJSwiftLog.Level, default is debug level
