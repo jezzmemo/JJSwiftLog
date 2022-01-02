@@ -51,7 +51,10 @@ public struct JJConsoleOutput: JJLogOutput {
         }
     }
     
-    public init() {
+    public var identifier: String
+    
+    public init(identifier: String = "") {
+        self.identifier = identifier
         _consoleQueue = DispatchQueue(label: "JJConsoleOutput", target: _consoleQueue)
         #if os(macOS) || os(tvOS) || os(iOS) || os(watchOS)
         _stdoutFilePointer = Darwin.stdout

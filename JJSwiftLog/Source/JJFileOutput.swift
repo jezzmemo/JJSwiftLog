@@ -11,7 +11,7 @@ import Foundation
 /// Save the log to file
 ///
 /// Implement by the FILE Pointer
-public class JJFileOutput: JJLogOutput {
+open class JJFileOutput: JJLogOutput {
     
     public static let maxFileSize: UInt64 = 1_048_576
     
@@ -110,10 +110,15 @@ public class JJFileOutput: JJLogOutput {
         return _logQueue
     }
     
+    /// JJLogOutputDelegate
+    public weak var delegate: JJLogOutputDelegate?
+    
     /// if filePath nil，the log will save to `cachesDirectory`
     ///
     /// - Parameter filePath: File path
-    public init?(filePath: String? = nil) {
+    public init?(filePath: String? = nil, delegate: JJLogOutputDelegate? = nil) {
+        
+        self.delegate = delegate
         
         if let filePath = filePath {
             logFilePath = filePath

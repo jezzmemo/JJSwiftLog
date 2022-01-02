@@ -18,8 +18,10 @@ open class JJSwiftLog {
     
     /// Constants variable
     public struct Constants {
-        /// lib version number
+        /// Lib version number
         public static let version = "0.0.12"
+        /// Internal console
+        public static let internalConsoleIdentifier = "log.console"
     }
     
     var logLevel: Level = .debug
@@ -65,7 +67,7 @@ open class JJSwiftLog {
     /// - Parameter needDefaultOutput: Default output to show lib message log
     public init(needDefaultOutput: Bool = true) {
         if needDefaultOutput {
-            var console = JJConsoleOutput()
+            var console = JJConsoleOutput(identifier: Constants.internalConsoleIdentifier)
             console.isUseNSLog = false
             console.logLevel = .debug
             self.addLogOutput(console)
@@ -84,7 +86,7 @@ open class JJSwiftLog {
         console.logLevel = level
         self.addLogOutput(console)
         
-        if let file = JJFileOutput() {
+        if let file = JJFileOutput(delegate: self) {
             file.logLevel = fileLevel ?? level
             self.addLogOutput(file)
         }
@@ -198,6 +200,14 @@ open class JJSwiftLog {
             }
         }
     }
+}
+
+extension JJSwiftLog: JJLogOutputDelegate {
+    
+    public func logIn(_ message: @autoclosure () -> Any, file: String, function: String, line: Int) {
+        
+    }
+    
 }
 
 extension JJSwiftLog {

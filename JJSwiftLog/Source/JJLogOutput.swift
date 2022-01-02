@@ -50,6 +50,15 @@ internal struct JJLogOutputConfig {
     }
 }
 
+/// JJLogOutput callback
+///
+/// Special sdk log to develop
+public protocol JJLogOutputDelegate: AnyObject {
+    
+    /// SDK special log message
+    func logIn(_ message: @autoclosure() -> Any, file: String, function: String, line: Int)
+}
+
 /// Abstract log
 ///
 /// Log，(Console)，(File), (Network)
@@ -79,14 +88,39 @@ public protocol JJLogOutput {
         set
     }
     
+    /// Object identifier, override the equals, defalut value is current object name
+    var identifier: String {
+        get
+    }
+    
+    /// JJLogOutput object callback
+    var delegate: JJLogOutputDelegate? {
+        get
+        set
+    }
+    
+}
+
+public extension JJLogOutput {
+    
+    /// Identifier value is object name
+    var identifier: String {
+        return String(describing: type(of: self))
+    }
+    
+    /// Option delegate
+    var delegate: JJLogOutputDelegate? {
+        get {
+            return nil
+        }
+        set {
+        }
+    }
 }
 
 /// Check JJLogOutput implment object only one
 /// - Parameter lhs: JJLogOutput
 /// - Parameter rhs: JJLogOutput
 func == (lhs: JJLogOutput, rhs: JJLogOutput) -> Bool {
-    guard type(of: lhs) == type(of: rhs) else {
-        return false
-    }
-    return true
+    return lhs.identifier == rhs.identifier
 }
