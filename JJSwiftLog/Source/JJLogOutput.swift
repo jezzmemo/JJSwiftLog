@@ -54,7 +54,7 @@ internal struct JJLogOutputConfig {
 public protocol JJLogOutputDelegate: AnyObject {
     
     /// SDK special log message
-    func logIn(source: JJLogOutput, log: JJLogBody)
+    func internalLog(source: JJLogOutput, log: JJLogBody)
 }
 
 /// Abstract log

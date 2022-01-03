@@ -82,7 +82,8 @@ open class JJSwiftLog {
     /// - Parameters:
     ///   - level: JJSwiftLog.Level, default is debug level
     ///   - fileLevel: JJSwiftLog.Level option type
-    open func setup(level: JJSwiftLog.Level = .debug, fileLevel: JJSwiftLog.Level? = nil) {
+    ///   - filePath: Save file log `String` path
+    open func setup(level: JJSwiftLog.Level = .debug, fileLevel: JJSwiftLog.Level? = nil, filePath: String? = nil) {
         logLevel = level
         
         var console = JJConsoleOutput(identifier: Constants.normalConsoleIdentifier)
@@ -90,7 +91,7 @@ open class JJSwiftLog {
         console.logLevel = level
         self.addLogOutput(console)
         
-        if let file = JJFileOutput(delegate: self, identifier: Constants.fileIdentifier) {
+        if let file = JJFileOutput(filePath: filePath, delegate: self, identifier: Constants.fileIdentifier) {
             file.logLevel = fileLevel ?? level
             self.addLogOutput(file)
         }
@@ -208,13 +209,20 @@ open class JJSwiftLog {
 
 extension JJSwiftLog: JJLogOutputDelegate {
     
-    public func logIn(source: JJLogOutput, log: JJLogBody) {
-        
+    public func internalLog(source: JJLogOutput, log: JJLogBody) {
+        internalOutputLog()?.log(log.level, msg: log.message, thread: "", file: log.fileName, function: log.functionName, line: log.lineNumber)
     }
     
 }
 
 extension JJSwiftLog {
+    
+    func internalOutputLog() -> JJLogOutput? {
+        for output in outputs where output.identifier == Constants.internalConsoleIdentifier {
+            return output
+        }
+        return nil
+    }
     
     func threadName() -> String {
         guard !Thread.isMainThread else {
@@ -252,9 +260,7 @@ extension JJSwiftLog {
         logs.append(libInfo)
         
         logs.forEach { message in
-            outputs.forEach { log in
-                log.log(.info, msg: message, thread: "", file: "", function: "", line: 0)
-            }
+            internalOutputLog()?.log(.info, msg: message, thread: "", file: "", function: "", line: 0)
         }
     }
     
