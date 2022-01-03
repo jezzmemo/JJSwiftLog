@@ -12,6 +12,8 @@
 		53DEB30C57F2B327B5DE4663 /* Pods_JJSwiftLogTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76452E1943E25864935B817 /* Pods_JJSwiftLogTests.framework */; };
 		610FBB2E2781852B0021BB00 /* JJLogBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610FBB2D2781852B0021BB00 /* JJLogBody.swift */; };
 		610FBB302781867A0021BB00 /* JJLogFormatterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610FBB2F2781867A0021BB00 /* JJLogFormatterProtocol.swift */; };
+		610FBB312782AA4D0021BB00 /* JJLogBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610FBB2D2781852B0021BB00 /* JJLogBody.swift */; };
+		610FBB322782AA4D0021BB00 /* JJLogFormatterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610FBB2F2781867A0021BB00 /* JJLogFormatterProtocol.swift */; };
 		612D73A224299C3800EDA133 /* JJLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6174B98E23F83AFA00841805 /* JJLogFormatter.swift */; };
 		614D5A8523BA09B0004E7AA2 /* JJSwiftLogCarthage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 614D5A7C23BA09AF004E7AA2 /* JJSwiftLogCarthage.framework */; };
 		614D5A8C23BA09B0004E7AA2 /* JJSwiftLogCarthageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614D5A8B23BA09B0004E7AA2 /* JJSwiftLogCarthageTests.swift */; };
@@ -525,6 +527,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				610FBB312782AA4D0021BB00 /* JJLogBody.swift in Sources */,
+				610FBB322782AA4D0021BB00 /* JJLogFormatterProtocol.swift in Sources */,
 				612D73A224299C3800EDA133 /* JJLogFormatter.swift in Sources */,
 				614D5A9A23BA09D3004E7AA2 /* JJSwiftLog.swift in Sources */,
 				614D5A9B23BA09D3004E7AA2 /* JJLogOutput.swift in Sources */,

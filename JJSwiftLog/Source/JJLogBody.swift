@@ -8,8 +8,14 @@
 
 import Foundation
 
-/// Message object
+/// Log object
 public struct JJLogBody {
+    
+    /// Log level
+    public var level: JJSwiftLog.Level
+
+    /// Date
+    public var date: Date
     
     /// Message
     public var message: String
@@ -28,12 +34,16 @@ public struct JJLogBody {
     
     /// Init
     /// - Parameters:
+    ///   - level: Log level
+    ///   - date: Send time
     ///   - message: Message
     ///   - functionName: Function
     ///   - fileName: File
     ///   - lineNumber: Line
     ///   - extraInfo: Extra info
-    public init(message: String, functionName: String, fileName: String, lineNumber: Int, extraInfo: [String: Any] = [:]) {
+    public init(level: JJSwiftLog.Level, date: Date, message: String, functionName: String, fileName: String, lineNumber: Int, extraInfo: [String: Any] = [:]) {
+        self.level = level
+        self.date = date
         self.message = message
         self.functionName = functionName
         self.fileName = fileName

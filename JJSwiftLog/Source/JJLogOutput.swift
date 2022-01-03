@@ -51,12 +51,10 @@ internal struct JJLogOutputConfig {
 }
 
 /// JJLogOutput callback
-///
-/// Special sdk log to develop
 public protocol JJLogOutputDelegate: AnyObject {
     
     /// SDK special log message
-    func logIn(_ message: @autoclosure() -> Any, file: String, function: String, line: Int)
+    func logIn(source: JJLogOutput, log: JJLogBody)
 }
 
 /// Abstract log

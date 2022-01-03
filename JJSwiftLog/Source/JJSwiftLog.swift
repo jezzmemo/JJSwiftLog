@@ -21,7 +21,11 @@ open class JJSwiftLog {
         /// Lib version number
         public static let version = "0.0.12"
         /// Internal console
-        public static let internalConsoleIdentifier = "log.console"
+        public static let internalConsoleIdentifier = "log.internal.console"
+        /// Normal console
+        public static let normalConsoleIdentifier = "log.normal.console"
+        /// File
+        public static let fileIdentifier = "log.file.console"
     }
     
     var logLevel: Level = .debug
@@ -81,12 +85,12 @@ open class JJSwiftLog {
     open func setup(level: JJSwiftLog.Level = .debug, fileLevel: JJSwiftLog.Level? = nil) {
         logLevel = level
         
-        var console = JJConsoleOutput()
+        var console = JJConsoleOutput(identifier: Constants.normalConsoleIdentifier)
         console.isUseNSLog = false
         console.logLevel = level
         self.addLogOutput(console)
         
-        if let file = JJFileOutput(delegate: self) {
+        if let file = JJFileOutput(delegate: self, identifier: Constants.fileIdentifier) {
             file.logLevel = fileLevel ?? level
             self.addLogOutput(file)
         }
@@ -204,7 +208,7 @@ open class JJSwiftLog {
 
 extension JJSwiftLog: JJLogOutputDelegate {
     
-    public func logIn(_ message: @autoclosure () -> Any, file: String, function: String, line: Int) {
+    public func logIn(source: JJLogOutput, log: JJLogBody) {
         
     }
     

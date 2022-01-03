@@ -113,12 +113,17 @@ open class JJFileOutput: JJLogOutput {
     /// JJLogOutputDelegate
     public weak var delegate: JJLogOutputDelegate?
     
+    public var identifier: String
+    
     /// if filePath nil，the log will save to `cachesDirectory`
     ///
     /// - Parameter filePath: File path
-    public init?(filePath: String? = nil, delegate: JJLogOutputDelegate? = nil) {
+    /// - Parameter delegate: Current object callback
+    /// - Parameter identifier: Output object identifier
+    public init?(filePath: String? = nil, delegate: JJLogOutputDelegate? = nil, identifier: String = "") {
         
         self.delegate = delegate
+        self.identifier = identifier
         
         if let filePath = filePath {
             logFilePath = filePath
@@ -147,6 +152,9 @@ open class JJFileOutput: JJLogOutput {
         #endif
         
         _logQueue = DispatchQueue(label: "JJLogFile", target: _logQueue)
+        
+        let log = JJLogBody(level: .info, date: Date(), message: "XCGLogger " + " log to: " + logFilePath!, functionName: "", fileName: "", lineNumber: 0)
+        self.delegate?.logIn(source: self, log: log)
     }
     
     public func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) {
