@@ -1,6 +1,6 @@
 //
 //  JJLogMeta.swift
-//  JJSwiftLog
+//  JJSwiftLog: https://github.com/jezzmemo/JJSwiftLog
 //
 //  Created by Jezz on 2022/1/2.
 //  Copyright © 2022 JJSwiftLog. All rights reserved.
@@ -9,7 +9,7 @@
 import Foundation
 
 /// Log object
-public struct JJLogBody {
+public struct JJLogEntity {
     
     /// Log level
     public var level: JJSwiftLog.Level

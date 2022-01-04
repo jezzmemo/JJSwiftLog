@@ -1,6 +1,6 @@
 //
 //  JJSwiftLog.swift
-//  JJSwiftLog
+//  JJSwiftLog: https://github.com/jezzmemo/JJSwiftLog
 //
 //  Created by Jezz on 2019/12/27.
 //  Copyright © 2019 JJSwiftLog. All rights reserved.
@@ -25,7 +25,7 @@ open class JJSwiftLog {
         /// Normal console
         public static let normalConsoleIdentifier = "log.normal.console"
         /// File
-        public static let fileIdentifier = "log.file.console"
+        public static let fileIdentifier = "log.file"
     }
     
     var logLevel: Level = .debug
@@ -86,6 +86,8 @@ open class JJSwiftLog {
     open func setup(level: JJSwiftLog.Level = .debug, fileLevel: JJSwiftLog.Level? = nil, filePath: String? = nil) {
         logLevel = level
         
+        self.startLogInfo()
+        
         var console = JJConsoleOutput(identifier: Constants.normalConsoleIdentifier)
         console.isUseNSLog = false
         console.logLevel = level
@@ -95,8 +97,6 @@ open class JJSwiftLog {
             file.logLevel = fileLevel ?? level
             self.addLogOutput(file)
         }
-        
-        self.startLogInfo()
     }
 
     /// Add customer process log
@@ -209,7 +209,7 @@ open class JJSwiftLog {
 
 extension JJSwiftLog: JJLogOutputDelegate {
     
-    public func internalLog(source: JJLogOutput, log: JJLogBody) {
+    public func internalLog(source: JJLogOutput, log: JJLogEntity) {
         internalOutputLog()?.log(log.level, msg: log.message, thread: "", file: log.fileName, function: log.functionName, line: log.lineNumber)
     }
     

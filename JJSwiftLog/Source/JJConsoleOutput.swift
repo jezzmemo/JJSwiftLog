@@ -1,6 +1,6 @@
 //
 //  JJConsoleOutput.swift
-//  JJSwiftLog
+//  JJSwiftLog: https://github.com/jezzmemo/JJSwiftLog
 //
 //  Created by Jezz on 2019/12/27.
 //  Copyright © 2019 JJSwiftLog. All rights reserved.

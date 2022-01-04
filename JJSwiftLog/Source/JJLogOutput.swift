@@ -1,6 +1,6 @@
 //
 //  JJLogOutput.swift
-//  JJSwiftLog
+//  JJSwiftLog: https://github.com/jezzmemo/JJSwiftLog
 //
 //  Created by Jezz on 2019/12/27.
 //  Copyright © 2019 JJSwiftLog. All rights reserved.
@@ -54,7 +54,7 @@ internal struct JJLogOutputConfig {
 public protocol JJLogOutputDelegate: AnyObject {
     
     /// SDK special log message
-    func internalLog(source: JJLogOutput, log: JJLogBody)
+    func internalLog(source: JJLogOutput, log: JJLogEntity)
 }
 
 /// Abstract log
@@ -111,8 +111,7 @@ public extension JJLogOutput {
         get {
             return nil
         }
-        set {
-        }
+        set {}
     }
 }
 

@@ -1,6 +1,6 @@
 //
 //  JJFileOutput.swift
-//  JJSwiftLog
+//  JJSwiftLog: https://github.com/jezzmemo/JJSwiftLog
 //
 //  Created by Jezz on 2019/12/27.
 //  Copyright © 2019 JJSwiftLog. All rights reserved.
@@ -153,7 +153,7 @@ open class JJFileOutput: JJLogOutput {
         
         _logQueue = DispatchQueue(label: "JJLogFile", target: _logQueue)
         
-        let log = JJLogBody(level: .info, date: Date(), message: ">>> JJSwiftLog log file path: " + logFilePath!, functionName: "", fileName: "", lineNumber: 0)
+        let log = JJLogEntity(level: .info, date: Date(), message: ">>> JJSwiftLog Writing path: " + logFilePath!, functionName: "", fileName: "", lineNumber: 0)
         self.delegate?.internalLog(source: self, log: log)
     }
     

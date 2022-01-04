@@ -1,6 +1,6 @@
 //
 //  JJLogFormatter.swift
-//  JJSwiftLog
+//  JJSwiftLog: https://github.com/jezzmemo/JJSwiftLog
 //
 //  Created by Jezz on 2020/2/15.
 //  Copyright © 2020 JJSwiftLog. All rights reserved.
