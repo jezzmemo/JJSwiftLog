@@ -81,7 +81,7 @@ echo "Current version: ${currentVersion}, New version: ${newVersion}"
 #Push JJException.podspec
 
 git add JJSwiftLog.podspec
-git commit -m ${newVersion}
+git commit -a -m ${newVersion}
 
 git tag ${newVersion}
 git push origin master --tags

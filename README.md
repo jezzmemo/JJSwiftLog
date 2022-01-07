@@ -85,14 +85,16 @@ override func viewDidLoad() {
 ```swift
 override func viewDidLoad() {
      super.viewDidLoad()
-     var file = JJFileOutput()
+     // filePath需要存储的路径
+     var file = JJFileOutput(filePath: "filePath", delegate: JJLogger, identifier: "file")
      file?.targetMaxFileSize = 1000 * 1024
      file?.targetMaxTimeInterval = 600
      file?.targetMaxLogFiles = 20
      JJLogger.addLogOutput(file)
      #if DEBUG
-     JJLogger.addLogOutput(JJConsoleOutput())
+     JJLogger.addLogOutput(JJConsoleOutput(identifier: "console"))
      #endif
+     // 注意startLogInfo调用时机
      JJLogger.startLogInfo()
      JJLogger.verbose("verbose")
      JJLogger.debug("debug")   
@@ -197,14 +199,22 @@ public struct CustomerOutput: JJLogOutput {
     public func log(_ level: JJSwiftLog.Level, msg: String, thread: String,
      file: String, function: String, line: Int) {
     }
+
+    /// 区别每个自定义对象
+    var identifier: String {
+        return ""
+    }
+    
+    /// 从自定义output回调给外部，推荐使用Class，使用结构体需要注意
+    var delegate: JJLogOutputDelegate?
     
 }
 ```
 
 ## TODO(记得给我星哦)
 
-* 多项Setup配置
-* 丰富日志格式
+* 支持协议形式的格式日志
+* 内置支持彩色日志（基于插件）
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)

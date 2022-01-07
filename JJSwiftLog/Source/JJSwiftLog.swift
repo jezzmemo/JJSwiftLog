@@ -19,7 +19,7 @@ open class JJSwiftLog {
     /// Constants variable
     public struct Constants {
         /// Lib version number
-        public static let version = "0.0.12"
+        public static let version = "0.0.13"
         /// Internal console
         public static let internalConsoleIdentifier = "log.internal.console"
         /// Normal console
@@ -193,6 +193,9 @@ open class JJSwiftLog {
         let resultMessage = "\(message)"
         
         for output in outputs {
+            if output.identifier == Constants.internalConsoleIdentifier {
+                continue
+            }
             if output.logLevel.rawValue > level.rawValue {
                 continue
             }

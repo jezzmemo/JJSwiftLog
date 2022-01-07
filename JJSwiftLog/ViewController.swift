@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let file = JJFileOutput()
+    let file = JJFileOutput(delegate: JJLogger, identifier: "file")
 
     func setupLog() {
 
@@ -64,7 +64,7 @@ class ViewController: UIViewController {
             JJLogger.addLogOutput(file!)
         }
         #if DEBUG
-        var console = JJConsoleOutput()
+        var console = JJConsoleOutput(identifier: "console")
         console.isUseNSLog = false
         JJLogger.addLogOutput(console)
         #endif
