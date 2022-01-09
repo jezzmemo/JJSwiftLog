@@ -97,6 +97,18 @@ public protocol JJLogOutput {
         set
     }
     
+    /// Format log
+    var formatter: JJLogFormatterProtocol? {
+        get
+        set
+    }
+    
+    /// Filt log
+    var filter: JJLogFilter? {
+        get
+        set
+    }
+    
 }
 
 public extension JJLogOutput {
@@ -106,13 +118,6 @@ public extension JJLogOutput {
         return String(describing: type(of: self))
     }
     
-    /// Option delegate
-    var delegate: JJLogOutputDelegate? {
-        get {
-            return nil
-        }
-        set {}
-    }
 }
 
 /// Check JJLogOutput implment object only one

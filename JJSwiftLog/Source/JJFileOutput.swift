@@ -11,7 +11,7 @@ import Foundation
 /// Save the log to file
 ///
 /// Implement by the FILE Pointer
-open class JJFileOutput: JJLogOutput {
+open class JJFileOutput: JJLogObject {
     
     public static let maxFileSize: UInt64 = 1_048_576
     
@@ -91,39 +91,13 @@ open class JJFileOutput: JJLogOutput {
     /// If device space warning, the cache file will remove by the system
     private(set) var logFilePath: String?
     
-    /// Default file level verbose
-    private var _logLevel: JJSwiftLog.Level = .verbose
-    
-    /// File queue
-    private var _logQueue: DispatchQueue?
-    
-    public var logLevel: JJSwiftLog.Level {
-        get {
-            return _logLevel
-        }
-        set {
-            _logLevel = newValue
-        }
-    }
-    
-    public var queue: DispatchQueue? {
-        return _logQueue
-    }
-    
-    /// JJLogOutputDelegate
-    public weak var delegate: JJLogOutputDelegate?
-    
-    public var identifier: String
-    
     /// if filePath nil，the log will save to `cachesDirectory`
     ///
     /// - Parameter filePath: File path
     /// - Parameter delegate: Current object callback
     /// - Parameter identifier: Output object identifier
     public init?(filePath: String? = nil, delegate: JJLogOutputDelegate? = nil, identifier: String = "") {
-        
-        self.delegate = delegate
-        self.identifier = identifier
+        super.init(identifier: identifier, delegate: delegate)
         
         if let filePath = filePath {
             logFilePath = filePath
@@ -151,13 +125,11 @@ open class JJFileOutput: JJLogOutput {
         }
         #endif
         
-        _logQueue = DispatchQueue(label: "JJLogFile", target: _logQueue)
-        
         let log = JJLogEntity(level: .info, date: Date(), message: ">>> JJSwiftLog Writing path: " + logFilePath!, functionName: "", fileName: "", lineNumber: 0)
         self.delegate?.internalLog(source: self, log: log)
     }
     
-    public func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) {
+    public override func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) {
         let formatMessage = self.formatMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
         self.write(string: formatMessage)
     }
@@ -183,7 +155,6 @@ open class JJFileOutput: JJLogOutput {
             createNewFile()
         }
     }
-    
 }
 
 extension JJFileOutput {

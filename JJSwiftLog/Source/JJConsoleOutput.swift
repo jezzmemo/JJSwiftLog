@@ -21,11 +21,11 @@ import Glibc
 /// Console log
 ///
 /// Implement UNIX's `stdout`
-public struct JJConsoleOutput: JJLogOutput {
+open class JJConsoleOutput: JJLogObject {
     
     /// File pointer
-    private let _stdoutFilePointer: UnsafeMutablePointer<FILE>?
-    private let _stderrFilePointer: UnsafeMutablePointer<FILE>?
+    private var _stdoutFilePointer: UnsafeMutablePointer<FILE>?
+    private var _stderrFilePointer: UnsafeMutablePointer<FILE>?
     
     /// Console queue
     private var _consoleQueue: DispatchQueue?
@@ -38,23 +38,8 @@ public struct JJConsoleOutput: JJLogOutput {
     /// Default value is false
     public var isUseNSLog: Bool = false
     
-    public var queue: DispatchQueue? {
-        return _consoleQueue
-    }
-    
-    public var logLevel: JJSwiftLog.Level {
-        get {
-            return _consoleLevel
-        }
-        set {
-            _consoleLevel = newValue
-        }
-    }
-    
-    public var identifier: String
-    
     public init(identifier: String = "") {
-        self.identifier = identifier
+        super.init(identifier: identifier, delegate: nil)
         _consoleQueue = DispatchQueue(label: "JJConsoleOutput", target: _consoleQueue)
         #if os(macOS) || os(tvOS) || os(iOS) || os(watchOS)
         _stdoutFilePointer = Darwin.stdout
@@ -70,7 +55,7 @@ public struct JJConsoleOutput: JJLogOutput {
         #endif
     }
     
-    public func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) {
+    public override func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) {
         let message = self.formatMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
         if isUseNSLog {
             NSLog("%@", message)
