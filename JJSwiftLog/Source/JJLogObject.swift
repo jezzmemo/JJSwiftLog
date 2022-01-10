@@ -33,13 +33,20 @@ open class JJLogObject: JJLogOutput {
     open func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) {
         let message = self.formatMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
         let log = JJLogEntity(level: level, date: Date(), message: msg, functionName: function, fileName: file, lineNumber: line)
+        if self.filter?.ignore(log: log) == true {
+            return
+        }
         let formatMessage = self.formatter?.format(log: log)
         
         self.output(log: log, message: formatMessage != nil ? formatMessage! : message)
     }
     
+    /// Output message and origin log object
+    /// - Parameters:
+    ///   - log: JJLogEntity
+    ///   - message: Format message
     open func output(log: JJLogEntity, message: String) {
-        
+        fatalError("Must Override")
     }
     
 }
