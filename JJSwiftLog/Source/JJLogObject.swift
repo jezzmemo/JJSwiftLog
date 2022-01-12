@@ -38,10 +38,10 @@ open class JJLogObject: JJLogOutput {
         }
         let formatMessage = self.formatter?.format(log: log)
         
-        self.output(log: log, message: formatMessage != nil ? formatMessage! : message)
+        self.output(log: log, message: formatMessage ?? message)
     }
     
-    /// Output message and origin log object
+    /// Output format message and log object
     /// - Parameters:
     ///   - log: JJLogEntity
     ///   - message: Format message

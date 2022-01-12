@@ -27,12 +27,6 @@ open class JJConsoleOutput: JJLogObject {
     private var _stdoutFilePointer: UnsafeMutablePointer<FILE>?
     private var _stderrFilePointer: UnsafeMutablePointer<FILE>?
     
-    /// Console queue
-    private var _consoleQueue: DispatchQueue?
-    
-    /// Default log level verbose
-    private var _consoleLevel: JJSwiftLog.Level = .verbose
-    
     /// Use NSLog show console message
     ///
     /// Default value is false
@@ -40,7 +34,7 @@ open class JJConsoleOutput: JJLogObject {
     
     public init(identifier: String = "") {
         super.init(identifier: identifier, delegate: nil)
-        _consoleQueue = DispatchQueue(label: "JJConsoleOutput", target: _consoleQueue)
+        self.queue = DispatchQueue(label: "JJConsoleOutput")
         #if os(macOS) || os(tvOS) || os(iOS) || os(watchOS)
         _stdoutFilePointer = Darwin.stdout
         _stderrFilePointer = Darwin.stderr
@@ -55,12 +49,11 @@ open class JJConsoleOutput: JJLogObject {
         #endif
     }
     
-    public override func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) {
-        let message = self.formatMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
+    open override func output(log: JJLogEntity, message: String) {
         if isUseNSLog {
             NSLog("%@", message)
         } else {
-            self.writeMessageToConsole(message, isError: level == .error ? true : false)
+            self.writeMessageToConsole(message, isError: log.level == .error ? true : false)
         }
     }
     

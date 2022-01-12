@@ -124,14 +124,13 @@ open class JJFileOutput: JJLogObject {
             }
         }
         #endif
-        
+        self.queue = DispatchQueue(label: "JJFileOutput")
         let log = JJLogEntity(level: .info, date: Date(), message: ">>> JJSwiftLog Writing path: " + logFilePath!, functionName: "", fileName: "", lineNumber: 0)
         self.delegate?.internalLog(source: self, log: log)
     }
     
-    public override func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) {
-        let formatMessage = self.formatMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
-        self.write(string: formatMessage)
+    open override func output(log: JJLogEntity, message: String) {
+        self.write(string: message)
     }
     
     /// Write log to file
