@@ -42,6 +42,8 @@
 		6150534C23B6133F0097C4D9 /* JJFileOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6150534B23B6133F0097C4D9 /* JJFileOutput.swift */; };
 		6150534E23B6137F0097C4D9 /* JJLogOutput+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6150534D23B6137F0097C4D9 /* JJLogOutput+Extension.swift */; };
 		6174B98F23F83AFA00841805 /* JJLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6174B98E23F83AFA00841805 /* JJLogFormatter.swift */; };
+		61E1BB542793F85200FE223B /* JJFormatterLogANSIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E1BB532793F85100FE223B /* JJFormatterLogANSIColor.swift */; };
+		61E1BB552793F85200FE223B /* JJFormatterLogANSIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E1BB532793F85100FE223B /* JJFormatterLogANSIColor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +122,7 @@
 		6150534B23B6133F0097C4D9 /* JJFileOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJFileOutput.swift; sourceTree = "<group>"; };
 		6150534D23B6137F0097C4D9 /* JJLogOutput+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JJLogOutput+Extension.swift"; sourceTree = "<group>"; };
 		6174B98E23F83AFA00841805 /* JJLogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJLogFormatter.swift; sourceTree = "<group>"; };
+		61E1BB532793F85100FE223B /* JJFormatterLogANSIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJFormatterLogANSIColor.swift; sourceTree = "<group>"; };
 		7D191C64310219DDC70DFB0B /* Pods-JJSwiftLog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JJSwiftLog.release.xcconfig"; path = "Target Support Files/Pods-JJSwiftLog/Pods-JJSwiftLog.release.xcconfig"; sourceTree = "<group>"; };
 		96CADB581E94396F403436ED /* Pods-JJSwiftLogTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JJSwiftLogTests.release.xcconfig"; path = "Target Support Files/Pods-JJSwiftLogTests/Pods-JJSwiftLogTests.release.xcconfig"; sourceTree = "<group>"; };
 		A76452E1943E25864935B817 /* Pods_JJSwiftLogTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JJSwiftLogTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -247,6 +250,7 @@
 		6150534423B608B60097C4D9 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				61E1BB522793F7B500FE223B /* Formatter */,
 				6150534523B609890097C4D9 /* JJSwiftLog.swift */,
 				6150534723B60FB80097C4D9 /* JJLogOutput.swift */,
 				6150534923B612FA0097C4D9 /* JJConsoleOutput.swift */,
@@ -259,6 +263,14 @@
 				613BFC93278B220A00F4D77B /* JJLogFilter.swift */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		61E1BB522793F7B500FE223B /* Formatter */ = {
+			isa = PBXGroup;
+			children = (
+				61E1BB532793F85100FE223B /* JJFormatterLogANSIColor.swift */,
+			);
+			path = Formatter;
 			sourceTree = "<group>";
 		};
 		E3C2166B72817659D2EBB7AF /* Frameworks */ = {
@@ -537,6 +549,7 @@
 			files = (
 				610FBB312782AA4D0021BB00 /* JJLogEntity.swift in Sources */,
 				610FBB322782AA4D0021BB00 /* JJLogFormatterProtocol.swift in Sources */,
+				61E1BB552793F85200FE223B /* JJFormatterLogANSIColor.swift in Sources */,
 				612D73A224299C3800EDA133 /* JJLogFormatter.swift in Sources */,
 				610FBB3527888CA40021BB00 /* JJLogObject.swift in Sources */,
 				614D5A9A23BA09D3004E7AA2 /* JJSwiftLog.swift in Sources */,
@@ -566,6 +579,7 @@
 				610FBB2E2781852B0021BB00 /* JJLogEntity.swift in Sources */,
 				6150534A23B612FA0097C4D9 /* JJConsoleOutput.swift in Sources */,
 				6150532323B606400097C4D9 /* AppDelegate.swift in Sources */,
+				61E1BB542793F85200FE223B /* JJFormatterLogANSIColor.swift in Sources */,
 				613BFC94278B220A00F4D77B /* JJLogFilter.swift in Sources */,
 				6150534E23B6137F0097C4D9 /* JJLogOutput+Extension.swift in Sources */,
 				6174B98F23F83AFA00841805 /* JJLogFormatter.swift in Sources */,

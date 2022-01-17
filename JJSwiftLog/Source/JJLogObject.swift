@@ -13,30 +13,42 @@ import Foundation
 /// Extend form JJLogOutput, define the basic field and method
 open class JJLogObject: JJLogOutput {
     
+    /// Log level, default value is `.debug`
     open var logLevel: JJSwiftLog.Level = .debug
     
+    /// Log queue
     open var queue: DispatchQueue?
     
+    /// Log object identifier, will be unique
     open var identifier: String
     
+    /// Log format protocol, option
     open var formatter: JJLogFormatterProtocol?
     
+    /// Log object forward internal information to outside
     public weak var delegate: JJLogOutputDelegate?
     
+    /// Log filter
     open var filter: JJLogFilter?
     
+    /// Init JJLogObject
+    /// - Parameters:
+    ///   - identifier: unique identifier
+    ///   - delegate: internal callback
     public init(identifier: String = "", delegate: JJLogOutputDelegate? = nil) {
         self.identifier = identifier
         self.delegate = delegate
     }
     
     open func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) {
-        let message = self.formatMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
         let log = JJLogEntity(level: level, date: Date(), message: msg, functionName: function, fileName: file, lineNumber: line)
+        // Weather ignore log
         if self.filter?.ignore(log: log) == true {
             return
         }
-        let formatMessage = self.formatter?.format(log: log)
+        // Format log message
+        let message = self.formatMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
+        let formatMessage = self.formatter?.format(log: log, message: message)
         
         self.output(log: log, message: formatMessage ?? message)
     }

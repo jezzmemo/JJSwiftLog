@@ -1,0 +1,94 @@
+//
+//  JJFormatterLogANSIColor.swift
+//  JJSwiftLog: https://github.com/jezzmemo/JJSwiftLog
+//
+//  Created by Jezz on 2022/1/16.
+//  Copyright © 2022 JJSwiftLog. All rights reserved.
+//
+
+import Foundation
+
+/// ANSIColor
+open class JJFormatterLogANSIColor: JJLogFormatterProtocol {
+    
+    /// ANSI code
+    public static let colorStart = "\u{001b}["
+
+    /// ANSI Reset code
+    public static let colorEnd = "\(colorStart)m"
+    
+    internal var formatStrings: [JJSwiftLog.Level: String] = [:]
+    
+    /// ANSI colours
+    public enum ANSIColor {
+        case green
+        case yellow
+        case blue
+        case magenta
+        case cyan
+        case black
+        case red
+        
+        public var foregroundColor: String {
+            switch self {
+            case .green:
+                return "32"
+            case .yellow:
+                return "33"
+            case .blue:
+                return "34"
+            case .magenta:
+                return "35"
+            case .cyan:
+                return "36"
+            case .black:
+                return "30"
+            case .red:
+                return "31"
+            }
+        }
+        
+        public var backgroundColor: String {
+            switch self {
+            case .green:
+                return "32"
+            case .yellow:
+                return "33"
+            case .blue:
+                return "34"
+            case .magenta:
+                return "35"
+            case .cyan:
+                return "36"
+            case .black:
+                return "40"
+            case .red:
+                return "41"
+            }
+        }
+    }
+    
+    public init() {
+        setupFormatting()
+    }
+    
+    open func setupFormatting() {
+        colorize(level: .verbose, foregroundColor: .cyan)
+        colorize(level: .debug, foregroundColor: .green)
+        colorize(level: .info, foregroundColor: .blue)
+        colorize(level: .warning, foregroundColor: .yellow)
+        colorize(level: .error, foregroundColor: .red)
+    }
+    
+    open func colorize(level: JJSwiftLog.Level, foregroundColor: ANSIColor = .blue, backgroundColor: ANSIColor = .black) {
+        let codes: [String] = [foregroundColor.foregroundColor, backgroundColor.backgroundColor]
+
+        formatStrings[level] = JJFormatterLogANSIColor.colorStart + codes.joined(separator: ";") + "m"
+    }
+    
+    public func format(log: JJLogEntity, message: String) -> String {
+        let start = formatStrings[log.level] ?? ""
+        return "\(start)\(message)\(JJFormatterLogANSIColor.colorEnd)"
+    }
+    
+}

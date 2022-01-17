@@ -13,6 +13,6 @@ public protocol JJLogFormatterProtocol {
     
     /// Format object to String
     /// - Returns: Format result
-    func format(log: JJLogEntity) -> String
+    func format(log: JJLogEntity, message: String) -> String
     
 }

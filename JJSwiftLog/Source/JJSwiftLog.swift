@@ -64,14 +64,14 @@ open class JJSwiftLog {
     /// Simple log format
     public static let simpleFormat = "%D -> %F:%l - %f %M"
     
-    /// Default instance, developer can alloc it by myself
+    /// Default instance, developer can alloc it by self
     public static let `default` = JJSwiftLog()
     
     /// Init JJSwiftLog
     /// - Parameter needDefaultOutput: Default output to show lib message log
     public init(needDefaultOutput: Bool = true) {
         if needDefaultOutput {
-            var console = JJConsoleOutput(identifier: Constants.internalConsoleIdentifier)
+            let console = JJConsoleOutput(identifier: Constants.internalConsoleIdentifier)
             console.isUseNSLog = false
             console.logLevel = .debug
             self.addLogOutput(console)
@@ -88,7 +88,7 @@ open class JJSwiftLog {
         
         self.startLogInfo()
         
-        var console = JJConsoleOutput(identifier: Constants.normalConsoleIdentifier)
+        let console = JJConsoleOutput(identifier: Constants.normalConsoleIdentifier)
         console.isUseNSLog = false
         console.logLevel = level
         self.addLogOutput(console)
