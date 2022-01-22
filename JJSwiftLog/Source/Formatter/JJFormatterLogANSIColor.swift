@@ -14,10 +14,11 @@ open class JJFormatterLogANSIColor: JJLogFormatterProtocol {
     /// ANSI code
     public static let colorStart = "\u{001b}["
 
-    /// ANSI Reset code
+    /// ANSI code
     public static let colorEnd = "\(colorStart)m"
     
-    internal var formatStrings: [JJSwiftLog.Level: String] = [:]
+    /// Level color dictionary
+    internal var levelColor: [JJSwiftLog.Level: String] = [:]
     
     /// ANSI colours
     public enum ANSIColor {
@@ -83,11 +84,11 @@ open class JJFormatterLogANSIColor: JJLogFormatterProtocol {
     open func colorize(level: JJSwiftLog.Level, foregroundColor: ANSIColor = .blue, backgroundColor: ANSIColor = .black) {
         let codes: [String] = [foregroundColor.foregroundColor, backgroundColor.backgroundColor]
 
-        formatStrings[level] = JJFormatterLogANSIColor.colorStart + codes.joined(separator: ";") + "m"
+        levelColor[level] = JJFormatterLogANSIColor.colorStart + codes.joined(separator: ";") + "m"
     }
     
     public func format(log: JJLogEntity, message: String) -> String {
-        let start = formatStrings[log.level] ?? ""
+        let start = levelColor[log.level] ?? ""
         return "\(start)\(message)\(JJFormatterLogANSIColor.colorEnd)"
     }
     

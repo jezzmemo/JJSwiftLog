@@ -61,10 +61,11 @@ class ViewController: UIViewController {
             file?.targetMaxFileSize = 1000 * 1024
             file?.targetMaxTimeInterval = 600
             file?.targetMaxLogFiles = 20
+            file?.formatter = JJFormatterLogANSIColor()
             JJLogger.addLogOutput(file!)
         }
         #if DEBUG
-        var console = JJConsoleOutput(identifier: "console")
+        let console = JJConsoleOutput(identifier: "console")
         console.isUseNSLog = false
         JJLogger.addLogOutput(console)
         #endif
