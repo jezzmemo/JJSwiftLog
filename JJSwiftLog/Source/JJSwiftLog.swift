@@ -19,7 +19,7 @@ open class JJSwiftLog {
     /// Constants variable
     public struct Constants {
         /// Lib version number
-        public static let version = "0.0.14"
+        public static let version = "0.1.0"
         /// Internal console
         public static let internalConsoleIdentifier = "log.internal.console"
         /// Normal console

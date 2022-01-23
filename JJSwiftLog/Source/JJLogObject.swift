@@ -42,13 +42,15 @@ open class JJLogObject: JJLogOutput {
     
     open func log(_ level: JJSwiftLog.Level, msg: String, thread: String, file: String, function: String, line: Int) {
         let log = JJLogEntity(level: level, date: Date(), message: msg, functionName: function, fileName: file, lineNumber: line)
-        // Weather ignore log
-        if self.filter?.ignore(log: log) == true {
-            return
-        }
+        
         // Format log message
         let message = self.formatMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
         let formatMessage = self.formatter?.format(log: log, message: message)
+        
+        // Weather ignore log
+        if self.filter?.ignore(log: log, message: formatMessage ?? message) == true {
+            return
+        }
         
         self.output(log: log, message: formatMessage ?? message)
     }

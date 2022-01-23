@@ -16,13 +16,15 @@
 
 - [x] 日志文件存储(File Log)，配置文件日志的高级属性
 
-- [x] 用户自定义日志,实现`JJLogOutput`协议即可
+- [x] 用户自定义日志,继承`JJLogObject`
 
 - [x] 全局开关日志
 
 - [x] 只显示指定文件日志
 
-- [x] 自定义日志格式，任意组合, 内置样式供开发者选择
+- [x] 自定义过滤
+
+- [x] 自定义日志格式，任意组合, 内置样式供开发者选择，内置了ANSIColor格式
 
 - [x] 支持多平台iOS,MacOS,Windows和Linux
 
@@ -112,7 +114,7 @@ override func viewDidLoad() {
 * `JJConsoleOutput`可以使用 `NSLog`样式,使用`isUseNSLog`属性即可
 
 ```swift
-var console = JJConsoleOutput()
+let console = JJConsoleOutput()
 console.isUseNSLog = false
 ```
 
@@ -125,7 +127,7 @@ console.isUseNSLog = false
     * `targetMaxFileSize`文件最大个数，如果超出这个数，就会删除之前的文件
 
 ```swift
-var file = JJFileOutput()
+let file = JJFileOutput()
 file?.targetMaxFileSize = 1000 * 1024
 file?.targetMaxTimeInterval = 600
 file?.targetMaxLogFiles = 20
@@ -175,46 +177,62 @@ JJLogger.format = "%M %F %L%l %f %D"
 2020-04-08 22:56:54.890+0800 -> ViewController:32 - viewDidLoad() can’t fetch user info without user id
 ```
 
-* 高级使用，根据需要实现自定义接口`JJLogOutput`，示例如下:
+* 根据需要实现自定义接口`JJLogObject`，示例如下:
 
 ```swift
-public struct CustomerOutput: JJLogOutput {
-    
-    /// 自定义队列
-    public var queue: DispatchQueue? {
-        return nil
-    }
-    
-    /// 重写日志的级别
-    public var logLevel: JJSwiftLog.Level {
-        get {
-            return _consoleLevel
-        }
-        set {
-            _consoleLevel = newValue
-        }
-    }
-    
-    /// 获取日志方法，本地或者网络都可以
-    public func log(_ level: JJSwiftLog.Level, msg: String, thread: String,
-     file: String, function: String, line: Int) {
-    }
+public class CustomerOutput: JJLogObject {
+    ///重写output即可
+    open override func output(log: JJLogEntity, message: String) {
 
-    /// 区别每个自定义对象
-    var identifier: String {
-        return ""
     }
-    
-    /// 从自定义output回调给外部，推荐使用Class，使用结构体需要注意
-    var delegate: JJLogOutputDelegate?
     
 }
 ```
 
+* 每个`JJLogObject`对应有一个`formatter`(格式化)和`filter`(过滤)的属性，根据自己的需求可以定制格式化和过滤器，示例如下:
+
+```swift
+open class CustomerFormatter: JJLogFormatterProtocol {
+    public func format(log: JJLogEntity, message: String) -> String {
+        return ""
+    }
+}
+```
+
+```swift
+open class CustomerFilter: JJLogFilter {
+    func ignore(log: JJLogEntity, message: String) -> Bool {
+        return false
+    }
+}
+```
+
+* 内置了`JJFormatterLogANSIColor`，可以用终端查看用颜色的日志，只需要在`formatter`加入如下:
+
+**控制台不支持ANSIColor模式，目前只在终端上测试通过**
+
+```
+let file = JJFileOutput(delegate: JJLogger, identifier: "file")
+file?.targetMaxFileSize = 1000 * 1024
+file?.targetMaxTimeInterval = 600
+file?.targetMaxLogFiles = 20
+file?.formatter = JJFormatterLogANSIColor()
+JJLogger.addLogOutput(file!)
+```
+
+显示的样式如下:
+
+![JJSwiftLog ANSIColor](https://raw.githubusercontent.com/jezzmemo/JJSwiftLog/master/screenshots/ansicolor.png)
+
+
+## FAQ
+
+* [0.0.x如何升级到0.1.x](https://github.com/jezzmemo/JJSwiftLog/wiki/JJSwiftLog%E5%A6%82%E4%BD%95%E5%8D%87%E7%BA%A7%E5%88%B00.1.0)
+
 ## TODO(记得给我星哦)
 
-* 支持协议形式的格式日志
-* 内置支持彩色日志（基于插件）
+* 支持多格式化和过滤器
+* 调整内部日志
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)

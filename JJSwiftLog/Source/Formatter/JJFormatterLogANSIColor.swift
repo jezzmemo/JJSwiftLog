@@ -74,14 +74,14 @@ open class JJFormatterLogANSIColor: JJLogFormatterProtocol {
     }
     
     open func setupFormatting() {
-        colorize(level: .verbose, foregroundColor: .cyan)
-        colorize(level: .debug, foregroundColor: .green)
-        colorize(level: .info, foregroundColor: .blue)
-        colorize(level: .warning, foregroundColor: .yellow)
-        colorize(level: .error, foregroundColor: .red)
+        colour(level: .verbose, foregroundColor: .cyan)
+        colour(level: .debug, foregroundColor: .green)
+        colour(level: .info, foregroundColor: .blue)
+        colour(level: .warning, foregroundColor: .yellow)
+        colour(level: .error, foregroundColor: .red)
     }
     
-    open func colorize(level: JJSwiftLog.Level, foregroundColor: ANSIColor = .blue, backgroundColor: ANSIColor = .black) {
+    open func colour(level: JJSwiftLog.Level, foregroundColor: ANSIColor = .blue, backgroundColor: ANSIColor = .black) {
         let codes: [String] = [foregroundColor.foregroundColor, backgroundColor.backgroundColor]
 
         levelColor[level] = JJFormatterLogANSIColor.colorStart + codes.joined(separator: ";") + "m"
