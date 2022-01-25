@@ -108,7 +108,7 @@ open class JJFileOutput: JJLogObject {
         self.createNewFilePointer(filePath: logFilePath!)
         
         if _filePointer == nil {
-            print("Create file pointer failed")
+            self.makeCallbackLog(message: "Create file pointer failed")
             return nil
         }
         #if os(iOS) || os(watchOS) || os(tvOS)
@@ -119,14 +119,13 @@ open class JJFileOutput: JJLogObject {
                 try FileManager.default.setAttributes(attributes, ofItemAtPath: logFilePath ?? "")
                 currentLogFileSize = attributes[.size] as? UInt64 ?? 0
                 currentLogStartTimeInterval = (attributes[.creationDate] as? Date ?? Date()).timeIntervalSince1970
-            } catch _ {
-                print("Set file protectionKey failed")
+            } catch let error {
+                self.makeCallbackLog(message: error.localizedDescription)
             }
         }
         #endif
         self.queue = DispatchQueue(label: "JJFileOutput")
-        let log = JJLogEntity(level: .info, date: Date(), message: ">>> JJSwiftLog Writing path: " + logFilePath!, functionName: "", fileName: "", lineNumber: 0)
-        self.delegate?.internalLog(source: self, log: log)
+        self.makeCallbackLog(message: ">>> JJSwiftLog Writing path: " + logFilePath!)
     }
     
     open override func output(log: JJLogEntity, message: String) {
@@ -201,7 +200,7 @@ extension JJFileOutput {
             do {
                 try fileManager.removeItem(at: archivedFileURL)
             } catch let error as NSError {
-                JJLogger.error("CleanUpLogFiles log file error:\(error.localizedDescription)")
+                self.makeCallbackLog(message: error.localizedDescription)
             }
         }
     }
@@ -242,6 +241,11 @@ extension JJFileOutput {
 }
 
 extension JJFileOutput {
+    
+    func makeCallbackLog(message: String) {
+        let log = JJLogEntity(level: .info, date: Date(), message: message, functionName: "", fileName: "", lineNumber: 0)
+        self.delegate?.internalLog(source: self, log: log)
+    }
 
     /// Delete log file
     /// - Returns: true delete success, false delete failed
@@ -256,7 +260,7 @@ extension JJFileOutput {
             try FileManager.default.removeItem(atPath: filePath)
             return true
         } catch let error {
-            JJLogger.warning("Delete log file error:\(error.localizedDescription)")
+            self.makeCallbackLog(message: error.localizedDescription)
             return false
         }
     }
@@ -276,7 +280,7 @@ extension JJFileOutput {
             }
             try FileManager.default.copyItem(atPath: filePath, toPath: logFilePath)
         } catch let error {
-            JJLogger.warning("Copy log file error:\(error.localizedDescription)")
+            self.makeCallbackLog(message: error.localizedDescription)
         }
     }
 }
