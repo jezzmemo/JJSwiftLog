@@ -25,7 +25,7 @@ class ViewController: UIViewController {
         JJLogger.setup(level: .verbose)
 
         JJLogger.format = JJSwiftLog.simpleFormat
-        JJLogger.onlyLogFile("ViewController")
+//        JJLogger.onlyLogFile("ViewController")
 
         JJLogger.verbose("verbose")
         JJLogger.debug("debug")
@@ -61,7 +61,7 @@ class ViewController: UIViewController {
             file?.targetMaxFileSize = 1000 * 1024
             file?.targetMaxTimeInterval = 600
             file?.targetMaxLogFiles = 20
-            file?.formatter = JJFormatterLogANSIColor()
+            file?.formatters = [JJFormatterLogANSIColor()]
             JJLogger.addLogOutput(file!)
         }
         #if DEBUG

@@ -97,13 +97,27 @@ public protocol JJLogOutput {
         set
     }
     
+    /// Execute all formatters，formatted result one by one
+    var formatters: [JJLogFormatterProtocol]? {
+        get
+        set
+    }
+    
+    /// Execute all filters，if a filter return true, this log will end
+    var filters: [JJLogFilter]? {
+        get
+        set
+    }
+    
     /// Format log
+    @available(*, deprecated, message: "Please use formatters property")
     var formatter: JJLogFormatterProtocol? {
         get
         set
     }
     
     /// Filt log
+    @available(*, deprecated, message: "Please use filters property")
     var filter: JJLogFilter? {
         get
         set

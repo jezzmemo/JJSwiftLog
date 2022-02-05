@@ -22,14 +22,14 @@ open class JJLogObject: JJLogOutput {
     /// Log object identifier, will be unique
     open var identifier: String
     
-    /// Log format protocol, option
-    open var formatter: JJLogFormatterProtocol?
-    
     /// Log object forward internal information to outside
     public weak var delegate: JJLogOutputDelegate?
     
-    /// Log filter
-    open var filter: JJLogFilter?
+    /// Log format array protocol, option
+    open var formatters: [JJLogFormatterProtocol]?
+    
+    /// Log array filter
+    open var filters: [JJLogFilter]?
     
     /// Init JJLogObject
     /// - Parameters:
@@ -45,12 +45,29 @@ open class JJLogObject: JJLogOutput {
         
         // Format log message
         let message = self.formatMessage(level: level, msg: msg, thread: thread, file: file, function: function, line: line)
-        let formatMessage = self.formatter?.format(log: log, message: message)
         
-        // Weather ignore log
-        if self.filter?.ignore(log: log, message: formatMessage ?? message) == true {
+        /// ------------- Deprecated method ---------------------
+        // Weather to ignore logs
+        if self.filter?.ignore(log: log, message: message) == true {
             return
         }
+        
+        let formatMessage = self.formatter?.format(log: log, message: message)
+        /// ------------- Deprecated method ---------------------
+        
+        /// Formatter and filter collection
+        if let filters = self.filters {
+            for filter in filters {
+                if filter.ignore(log: log, message: message) == true {
+                    return
+                }
+            }
+        }
+        
+        var formatResult = message
+        self.formatters?.forEach({ formatter in
+            formatResult = formatter.format(log: log, message: formatResult)
+        })
         
         self.output(log: log, message: formatMessage ?? message)
     }
@@ -62,5 +79,15 @@ open class JJLogObject: JJLogOutput {
     open func output(log: JJLogEntity, message: String) {
         fatalError("Must Override")
     }
+    
+    // MARK: - Deprecated
+    
+    /// Log format protocol, option
+    @available(*, deprecated, message: "Please use formatters property")
+    open var formatter: JJLogFormatterProtocol?
+    
+    /// Log filter
+    @available(*, deprecated, message: "Please use filters property")
+    open var filter: JJLogFilter?
     
 }
