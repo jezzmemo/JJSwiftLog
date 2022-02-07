@@ -189,7 +189,7 @@ public class CustomerOutput: JJLogObject {
 }
 ```
 
-* 每个`JJLogObject`对应有一个`formatter`(格式化)和`filter`(过滤)的属性，根据自己的需求可以定制格式化和过滤器，示例如下:
+* 每个`JJLogObject`对应有一个`formatters`(格式化)和`filters`(过滤)的属性，根据自己的需求可以定制格式化和过滤器，示例如下:
 
 ```swift
 open class CustomerFormatter: JJLogFormatterProtocol {
@@ -207,7 +207,7 @@ open class CustomerFilter: JJLogFilter {
 }
 ```
 
-* 内置了`JJFormatterLogANSIColor`，可以用终端查看用颜色的日志，只需要在`formatter`加入如下:
+* 内置了`JJFormatterLogANSIColor`，可以用终端查看用颜色的日志，只需要在`formatters`加入如下:
 
 **控制台不支持ANSIColor模式，目前只在终端上测试通过**
 
@@ -216,7 +216,7 @@ let file = JJFileOutput(delegate: JJLogger, identifier: "file")
 file?.targetMaxFileSize = 1000 * 1024
 file?.targetMaxTimeInterval = 600
 file?.targetMaxLogFiles = 20
-file?.formatter = JJFormatterLogANSIColor()
+file?.formatters = [JJFormatterLogANSIColor()]
 JJLogger.addLogOutput(file!)
 ```
 
@@ -231,8 +231,7 @@ JJLogger.addLogOutput(file!)
 
 ## TODO(记得给我星哦)
 
-* 支持多格式化和过滤器
-* 调整内部日志
+* 支持主流网络日志
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)
