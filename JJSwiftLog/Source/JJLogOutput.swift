@@ -110,14 +110,14 @@ public protocol JJLogOutput {
     }
     
     /// Format log
-    @available(*, deprecated, message: "Please use formatters property")
+    @available(*, deprecated, message: "Use formatters property instead")
     var formatter: JJLogFormatterProtocol? {
         get
         set
     }
     
     /// Filt log
-    @available(*, deprecated, message: "Please use filters property")
+    @available(*, deprecated, message: "Use filters property instead")
     var filter: JJLogFilter? {
         get
         set

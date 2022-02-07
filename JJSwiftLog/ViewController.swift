@@ -9,8 +9,6 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
-    let file = JJFileOutput(delegate: JJLogger, identifier: "file")
 
     func setupLog() {
 
@@ -57,6 +55,7 @@ class ViewController: UIViewController {
     }
     
     func advanceUsage() {
+        let file = JJFileOutput(delegate: JJLogger, identifier: "file")
         if file != nil {
             file?.targetMaxFileSize = 1000 * 1024
             file?.targetMaxTimeInterval = 600
@@ -78,16 +77,6 @@ class ViewController: UIViewController {
         JJLogger.info("Show log info")
         JJLogger.warning("Build warning")
         JJLogger.error("can’t fetch user info without user id")
-    }
-
-    func testDeleteFile() {
-        file?.deleteLogFile()
-    }
-
-    func testArchiveFile() {
-        let appURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
-        let logFileURL = appURL!.appendingPathComponent("jjlogger1.log", isDirectory: false)
-        file?.archiveLogFilePath(logFileURL.path)
     }
 
 }

@@ -69,7 +69,10 @@ open class JJLogObject: JJLogOutput {
             formatResult = formatter.format(log: log, message: formatResult)
         })
         
-        self.output(log: log, message: formatMessage ?? message)
+        /// formatters override formatter
+        ///
+        /// formatters is higher priority than formatter
+        self.output(log: log, message: formatMessage == nil ? formatResult : formatMessage!)
     }
     
     /// Output format message and log object
