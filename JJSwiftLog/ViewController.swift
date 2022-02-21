@@ -71,6 +71,11 @@ class ViewController: UIViewController {
         JJLogger.startLogInfo()
     }
     
+    func sentryUsage() {
+        let sentry = JJSentryOutput(sentryKey: "key", sentryURL: URL(string: "http://www.exmaple.com/api/5/store/")!, delegate: JJLogger)
+        JJLogger.addLogOutput(sentry)
+    }
+    
     @objc func clickButton() {
         JJLogger.verbose("Start the record")
         JJLogger.debug("Debug the world")

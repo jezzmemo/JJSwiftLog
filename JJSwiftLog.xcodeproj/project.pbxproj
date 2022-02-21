@@ -18,6 +18,8 @@
 		610FBB3527888CA40021BB00 /* JJLogObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610FBB3327888CA40021BB00 /* JJLogObject.swift */; };
 		612D73A224299C3800EDA133 /* JJLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6174B98E23F83AFA00841805 /* JJLogFormatter.swift */; };
 		613A363627B013BC0071C021 /* FormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A363527B013BC0071C021 /* FormatterTests.swift */; };
+		613A363827B769DA0071C021 /* JJSentryOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A363727B769DA0071C021 /* JJSentryOutput.swift */; };
+		613A363A27C244AC0071C021 /* SentryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A363927C244AC0071C021 /* SentryTests.swift */; };
 		613BFC94278B220A00F4D77B /* JJLogFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613BFC93278B220A00F4D77B /* JJLogFilter.swift */; };
 		613BFC95278B220A00F4D77B /* JJLogFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613BFC93278B220A00F4D77B /* JJLogFilter.swift */; };
 		614D5A8523BA09B0004E7AA2 /* JJSwiftLogCarthage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 614D5A7C23BA09AF004E7AA2 /* JJSwiftLogCarthage.framework */; };
@@ -100,6 +102,8 @@
 		610FBB2F2781867A0021BB00 /* JJLogFormatterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJLogFormatterProtocol.swift; sourceTree = "<group>"; };
 		610FBB3327888CA40021BB00 /* JJLogObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJLogObject.swift; sourceTree = "<group>"; };
 		613A363527B013BC0071C021 /* FormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterTests.swift; sourceTree = "<group>"; };
+		613A363727B769DA0071C021 /* JJSentryOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJSentryOutput.swift; sourceTree = "<group>"; };
+		613A363927C244AC0071C021 /* SentryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentryTests.swift; sourceTree = "<group>"; };
 		613BFC93278B220A00F4D77B /* JJLogFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJLogFilter.swift; sourceTree = "<group>"; };
 		614D5A7C23BA09AF004E7AA2 /* JJSwiftLogCarthage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JJSwiftLogCarthage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		614D5A7E23BA09AF004E7AA2 /* JJSwiftLogCarthage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JJSwiftLogCarthage.h; sourceTree = "<group>"; };
@@ -246,6 +250,7 @@
 				6150533923B606460097C4D9 /* JJSwiftLogTests.swift */,
 				6150533B23B606460097C4D9 /* Info.plist */,
 				613A363527B013BC0071C021 /* FormatterTests.swift */,
+				613A363927C244AC0071C021 /* SentryTests.swift */,
 			);
 			path = JJSwiftLogTests;
 			sourceTree = "<group>";
@@ -264,6 +269,7 @@
 				610FBB2F2781867A0021BB00 /* JJLogFormatterProtocol.swift */,
 				610FBB3327888CA40021BB00 /* JJLogObject.swift */,
 				613BFC93278B220A00F4D77B /* JJLogFilter.swift */,
+				613A363727B769DA0071C021 /* JJSentryOutput.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -579,6 +585,7 @@
 				6150532723B606410097C4D9 /* ViewController.swift in Sources */,
 				6150534C23B6133F0097C4D9 /* JJFileOutput.swift in Sources */,
 				6150534823B60FB80097C4D9 /* JJLogOutput.swift in Sources */,
+				613A363827B769DA0071C021 /* JJSentryOutput.swift in Sources */,
 				610FBB2E2781852B0021BB00 /* JJLogEntity.swift in Sources */,
 				6150534A23B612FA0097C4D9 /* JJConsoleOutput.swift in Sources */,
 				6150532323B606400097C4D9 /* AppDelegate.swift in Sources */,
@@ -599,6 +606,7 @@
 			files = (
 				613A363627B013BC0071C021 /* FormatterTests.swift in Sources */,
 				6150533A23B606460097C4D9 /* JJSwiftLogTests.swift in Sources */,
+				613A363A27C244AC0071C021 /* SentryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
