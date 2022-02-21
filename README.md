@@ -224,6 +224,17 @@ JJLogger.addLogOutput(file!)
 
 ![JJSwiftLog ANSIColor](https://raw.githubusercontent.com/jezzmemo/JJSwiftLog/master/screenshots/ansicolor.png)
 
+* 支持Sentry网络日志, 使用示例如下：
+
+```
+let sentry = JJSentryOutput(sentryKey: "key", sentryURL: URL(string: "http://www.exmaple.com/api/5/store/")!, delegate: JJLogger)
+sentry.completion = { result in
+}
+sentry.failure = { error in
+}
+JJLogger.addLogOutput(sentry)
+```
+
 
 ## FAQ
 
@@ -231,7 +242,7 @@ JJLogger.addLogOutput(file!)
 
 ## TODO(记得给我星哦)
 
-* 支持主流网络日志
+* 优化文件存储
 
 ## Linker
 * [保护App不闪退](https://github.com/jezzmemo/JJException)

@@ -73,6 +73,12 @@ class ViewController: UIViewController {
     
     func sentryUsage() {
         let sentry = JJSentryOutput(sentryKey: "key", sentryURL: URL(string: "http://www.exmaple.com/api/5/store/")!, delegate: JJLogger)
+        sentry.completion = { result in
+            
+        }
+        sentry.failure = { error in
+            
+        }
         JJLogger.addLogOutput(sentry)
     }
     
