@@ -211,7 +211,7 @@ open class CustomerFilter: JJLogFilter {
 
 **控制台不支持ANSIColor模式，目前只在终端上测试通过**
 
-```
+```swift
 let file = JJFileOutput(delegate: JJLogger, identifier: "file")
 file?.targetMaxFileSize = 1000 * 1024
 file?.targetMaxTimeInterval = 600
@@ -226,8 +226,9 @@ JJLogger.addLogOutput(file!)
 
 * 支持Sentry网络日志, 使用示例如下：
 
-```
-let sentry = JJSentryOutput(sentryKey: "key", sentryURL: URL(string: "http://www.exmaple.com/api/5/store/")!, delegate: JJLogger)
+```swift
+let sentry = JJSentryOutput(sentryKey: "key", 
+sentryURL: URL(string: "http://www.exmaple.com/api/5/store/")!, delegate: JJLogger)
 sentry.completion = { result in
 }
 sentry.failure = { error in
