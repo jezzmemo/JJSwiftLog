@@ -8,27 +8,27 @@
 
 ![JJSwiftLog screenshot](https://raw.githubusercontent.com/jezzmemo/JJSwiftLog/master/screenshots/main.png)
 
-延续了Swift日志的简洁，也兼顾了日志的基本功能，文件名，函数名，行数等信息，内置了控制台和文件日志功能,满足开发者的基本需求，自定义日志予以开发者高度灵活的空间
+Keep the Swift log concise, and also take into account the basic functions of the log, file name, function name, number of lines and other information, built-in console and file log functions, to meet the basic needs of developers, custom logs for developers to be highly flexible.
 
-## 主要功能
+## Feature
 
-- [x] 控制台展示(Console Log)，兼顾`NSLog`的特性
+- [x] Console display (Console Log), taking into account the features of `NSLog`
 
-- [x] 日志文件存储(File Log)，配置文件日志的高级属性
+- [x] Log file storage (File Log), advanced properties of configuration file log
 
-- [x] 用户自定义日志,继承`JJLogObject`
+- [x] User-defined log, inherits `JJLogObject`
 
-- [x] 全局开关日志
+- [x] Global switch log
 
-- [x] 只显示指定文件日志
+- [x] Show only the specified file log
 
-- [x] 自定义过滤
+- [x] Custom log filter
 
-- [x] 自定义日志格式，任意组合, 内置样式供开发者选择，内置了ANSIColor格式
+- [x] Custom log format, any combination, built-in styles for developers to choose, built-in ANSIColor format
 
-- [x] 支持多平台iOS,MacOS,Windows和Linux
+- [x] Supports multi-platform iOS, MacOS, Windows and Linux
 
-## 如何安装
+## Install
 
 *  Swift 4.0+
 
@@ -52,19 +52,19 @@ __Swift Package Manager__
 .package(url: "https://github.com/jezzmemo/JJSwiftLog.git"),
 ```
 
-## 如何使用
+## How to use
 
-### 快速使用
+### Quick to use
 
-* 导入模块
+* Import module
 
 ```
 import JJSwiftLog
 ```
 
-* 快速入门
+* Quick start
 
-一般推荐在程序的入口处，进行初始化，默认配置了控制台和文件日志，只需要配置日志级别即可，以下是示例:
+It is generally recommended to initialize at the entry of the program. The console and file log are configured by default. You only need to configure the log level. example:
 
 ```swift
 override func viewDidLoad() {
@@ -80,14 +80,14 @@ override func viewDidLoad() {
 ``` 
 
 
-### 高级使用
+### Advanced
 
-* 开发者自己配置日志
+* The developer configures the log
 
 ```swift
 override func viewDidLoad() {
      super.viewDidLoad()
-     // filePath需要存储的路径
+     // filePath needs to store the path
      var file = JJFileOutput(filePath: "filePath", delegate: JJLogger, identifier: "file")
      file?.targetMaxFileSize = 1000 * 1024
      file?.targetMaxTimeInterval = 600
@@ -96,14 +96,14 @@ override func viewDidLoad() {
      #if DEBUG
      JJLogger.addLogOutput(JJConsoleOutput(identifier: "console"))
      #endif
-     // 注意startLogInfo调用时机
+     // Note the timing of the startLogInfo call
      JJLogger.startLogInfo()
      JJLogger.verbose("verbose")
      JJLogger.debug("debug")   
      JJLogger.info("info")
      JJLogger.warning("warn")
      JJLogger.error("error")
-     // 任意类型
+     // Any type
      JJLogger.verbose(123)
      JJLogger.debug(1.2)
      JJLogger.info(Date())
@@ -111,20 +111,20 @@ override func viewDidLoad() {
 }
 ```
 
-* `JJConsoleOutput`可以使用 `NSLog`样式,使用`isUseNSLog`属性即可
+* `JJConsoleOutput` use the `NSLog` style, use the `isUseNSLog` property
 
 ```swift
 let console = JJConsoleOutput()
 console.isUseNSLog = false
 ```
 
-* `JJFileOutput`有几个属性可以调整存储文件策略
+* `JJFileOutput`There are several properties to adjust the storage file strategy
 
-    * `targetMaxFileSize`文件最大体积
+    * `targetMaxFileSize`Maximum file size
 
-    * `targetMaxTimeInterval`生成新文件间隔
+    * `targetMaxTimeInterval`Generate new file interval
 
-    * `targetMaxFileSize`文件最大个数，如果超出这个数，就会删除之前的文件
+    * `targetMaxFileSize`The maximum number of files, if this number is exceeded, the previous files will be deleted
 
 ```swift
 let file = JJFileOutput()
@@ -133,40 +133,40 @@ file?.targetMaxTimeInterval = 600
 file?.targetMaxLogFiles = 20
 ```
 
-* 使用`enable`，实时开关日志，默认是开启的
+* Set `enable` to switch logging in real time, which is enabled by default
 
 ```swift
 JJLogger.enable = true
 ```
 
-* 使用`onlyLogFile`方法，让指定文件显示日志
+* Set the `onlyLogFile` method to make the specified file display logs
 
 ```swift
 JJLogger.onlyLogFile("ViewController")
 ```
 
-* JJSwiftLog支持自定义格式日志，以下表格是简写字母对应关系:
+* JJSwiftLog supports custom format logs. The following table is the correspondence between abbreviated letters:
 
-| 简写   | 描述     |
+| Shorthand   | Describtion     |
 |------|--------|
-| %M | 日志文本 |
-| %L | 日志级别 |
-| %l | 行数 |
-| %F | 文件名，不带后缀 |
-| %f | 函数名 |
-| %D | 日期(目前仅支持yyyy-MM-dd HH:mm:ss.SSSZ) |
-| %T | 线程，如果主线程显示main，子线程显示地址或者QueueLabel |
-| %t | 显示HH:mm:ss格式 |
-| %d | 显示yyyy-MM-dd格式 |
-| %N | 文件名，带后缀 |
+| %M | log text |
+| %L | log level |
+| %l | log line |
+| %F | filename, without suffix |
+| %f | Function name |
+| %D | Date (currently only yyyy-MM-dd HH:mm:ss.SSSZ is supported) |
+| %T | Thread, if the main thread displays main, the child thread displays the address or QueueLabel |
+| %t | Display HH:mm:ss format |
+| %d | Display yyyy-MM-dd format |
+| %N | filename, with suffix |
 
-代码示例:
+Example:
 
 ```swift
 JJLogger.format = "%M %F %L%l %f %D"
 ```
 
-还内置了一些样式，如:`JJLogger.format = JJSwiftLog.simpleFormat`,样式如下:
+There are also built-in styles, such as: `JJLogger.format = JJSwiftLog.simpleFormat`, example:
 
 ```
 2020-04-08 22:56:54.888+0800 -> ViewController:18 - setupVendor(parameter:) method set the parameter
@@ -177,7 +177,7 @@ JJLogger.format = "%M %F %L%l %f %D"
 2020-04-08 22:56:54.890+0800 -> ViewController:32 - viewDidLoad() can’t fetch user info without user id
 ```
 
-* 根据需要实现自定义接口`JJLogObject`，示例如下:
+* Implement the custom interface `JJLogObject` as needed, the example:
 
 ```swift
 public class CustomerOutput: JJLogObject {
@@ -189,7 +189,7 @@ public class CustomerOutput: JJLogObject {
 }
 ```
 
-* 每个`JJLogObject`对应有一个`formatters`(格式化)和`filters`(过滤)的属性，根据自己的需求可以定制格式化和过滤器，示例如下:
+* Each `JJLogObject` corresponds to a `formatters` (formatting) and `filters` (filtering) attributes. You can customize the formatting and filters according to your own needs. Example:
 
 ```swift
 open class CustomerFormatter: JJLogFormatterProtocol {
@@ -207,9 +207,9 @@ open class CustomerFilter: JJLogFilter {
 }
 ```
 
-* 内置了`JJFormatterLogANSIColor`，可以用终端查看用颜色的日志，只需要在`formatters`加入如下:
+* Built-in `JJFormatterLogANSIColor`, you can use the terminal to view the log with color, just add the following in `formatters`:
 
-**控制台不支持ANSIColor模式，目前只在终端上测试通过**
+**The xcode console does not support ANSIColor mode, currently only tested on the terminal**
 
 ```swift
 let file = JJFileOutput(delegate: JJLogger, identifier: "file")
@@ -220,11 +220,11 @@ file?.formatters = [JJFormatterLogANSIColor()]
 JJLogger.addLogOutput(file!)
 ```
 
-显示的样式如下:
+Example:
 
 ![JJSwiftLog ANSIColor](https://raw.githubusercontent.com/jezzmemo/JJSwiftLog/master/screenshots/ansicolor.png)
 
-* 支持Sentry网络日志, 使用示例如下：
+* Support __Sentry__, example：
 
 ```swift
 let sentry = JJSentryOutput(sentryKey: "key", 
@@ -237,16 +237,9 @@ JJLogger.addLogOutput(sentry)
 ```
 
 
-## FAQ
-
-* [0.0.x如何升级到0.1.x](https://github.com/jezzmemo/JJSwiftLog/wiki/JJSwiftLog%E5%A6%82%E4%BD%95%E5%8D%87%E7%BA%A7%E5%88%B00.1.0)
-
-## TODO(记得给我星哦)
-
-* 优化文件存储
-
 ## Linker
-* [保护App不闪退](https://github.com/jezzmemo/JJException)
+* [Guard iOS App](https://github.com/jezzmemo/JJException)
+* [中文说明](https://github.com/jezzmemo/JJSwiftLog/blob/master/README_CN.md)
 
 ## License
 JJSwiftLog is released under the MIT license. See LICENSE for details.
