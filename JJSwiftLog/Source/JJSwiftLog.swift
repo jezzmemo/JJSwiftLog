@@ -19,7 +19,7 @@ open class JJSwiftLog {
     /// Constants variable
     public struct Constants {
         /// Lib version number
-        public static let version = "0.1.2"
+        public static let version = "0.1.3"
         /// Internal console
         public static let internalConsoleIdentifier = "log.internal.console"
         /// Normal console
@@ -243,7 +243,7 @@ extension JJSwiftLog {
     }
     
     /// If add JJLogOutput by manual, developer recommend to call this method
-    open func startLogInfo() {
+    public func startLogInfo() {
 
         var buildString = "\(ProcessInfo.processInfo.processName) "
         if let infoDictionary = Bundle.main.infoDictionary {
