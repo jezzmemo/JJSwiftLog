@@ -241,6 +241,8 @@ JJLogger.addLogOutput(sentry)
 * [Guard iOS App](https://github.com/jezzmemo/JJException)
 * [中文说明](https://github.com/jezzmemo/JJSwiftLog/blob/master/README_CN.md)
 
+
+  
 ## License
 JJSwiftLog is released under the MIT license. See LICENSE for details.
 
